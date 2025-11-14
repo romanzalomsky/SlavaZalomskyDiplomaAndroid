@@ -41,13 +41,15 @@ android {
 
 dependencies {
     implementation(libs.hilt.android)
-/*    ksp(libs.hilt.androidx.compiler)*/
+    /*    ksp(libs.hilt.androidx.compiler)*/
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.converter.gson)
 
     implementation(libs.kotlinx.coroutines.android)
 
