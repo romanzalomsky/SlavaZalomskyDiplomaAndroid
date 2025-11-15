@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Sportscore</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="authNameId">Имя</string>
+    <string name="authPasswordId">Пароль</string>
+    <string name="enter">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="subtitleAuth">Войдите в свой аккаунт</string>
+    <string name="subtitleReg">Регистрация</string>
+    <string name="subtitleEmail">Почта</string>
+    <string name="authId">У меня есть аккаунт</string>
+    <string name="bottom_nav_gameId">Матчи</string>
+    <string name="bottom_nav_favoriteId">Избранное</string>
+    <string name="bottom_nav_personId">Кабинет</string>
+
 </resources>
