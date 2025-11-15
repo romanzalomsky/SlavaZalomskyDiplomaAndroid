@@ -47,15 +47,15 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        regLink.setOnClickListener {view ->
+        regLink.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_authFragment_to_registerFragment)
         }
-        authButton.setOnClickListener { view ->
+        authButton.setOnClickListener {
             performLogin()
         }
     }
 
-    private fun performLogin(){
+    private fun performLogin() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
@@ -69,9 +69,10 @@ class AuthFragment : Fragment() {
             password = password
         )
 
-        viewModel.getLogin(loginRequest,
+        viewModel.getLogin(
+            loginRequest,
             onSuccess = {
-            findNavController().navigate(R.id.action_authFragment_to_gameFragment)
+                findNavController().navigate(R.id.action_authFragment_to_gameFragment)
             },
             onError = {
                 Toast.makeText(requireContext(), "Что с ебалом)))", Toast.LENGTH_SHORT).show()

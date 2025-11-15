@@ -15,18 +15,19 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val registrationUseCase: RegistrationUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User>
         get() = _user
 
-    fun createNewUser(user: User, onSuccess: () -> Unit){
+    fun createNewUser(user: User, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 registrationUseCase(user = user)
                 onSuccess()
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e("asdfghjk", "Exception during request -> ${e.localizedMessage}")
+                onError()
             }
         }
     }

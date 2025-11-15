@@ -66,7 +66,7 @@ class SingletonModule {
     @Provides
     fun provideRetrofitBuilder(): Retrofit.Builder =
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080") //todo: change url to 169.254.177.17
+            .baseUrl("http://10.0.2.2:8080")
             .addConverterFactory(GsonConverterFactory.create())
 
     @Singleton
