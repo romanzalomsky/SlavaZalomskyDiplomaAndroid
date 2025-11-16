@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".features.bottom_container.person.admin_settings.country.CountryFragment">
+    tools:context=".features.bottom_container.person.admin_settings.city.CityFragment">
 
     <TextView
-        android:id="@+id/titleAdminMenu"
+        android:id="@+id/titleCityMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Настройка стран"
+        android:text="Настройка городов"
         android:textColor="@color/systemColor"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -22,18 +22,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/labelAddCountry"
+        android:id="@+id/labelAddCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Добавить новую страну"
+        android:text="Добавить новый город"
         android:textColor="@color/systemColor"
         android:textSize="16sp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleAdminMenu" />
+        app:layout_constraintTop_toBottomOf="@+id/titleCityMenu" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/countryNameInputLayout"
+        android:id="@+id/cityNameInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,19 +44,19 @@
         app:boxCornerRadiusTopStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelAddCountry">
+        app:layout_constraintTop_toBottomOf="@+id/labelAddCity">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/countryNameEditText"
+            android:id="@+id/cityNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название страны (например, Россия)"
+            android:hint="Название города (например, Москва)"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/flagInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/countrySelectorLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -66,52 +66,53 @@
         app:boxCornerRadiusTopStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countryNameInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/cityNameInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/flagEditText"
+        <AutoCompleteTextView
+            android:id="@+id/countryAutoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ссылка на флаг (URL)"
-            android:inputType="textUri" />
+            android:hint="Выберите Страну"
+            android:inputType="none"
+            tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/addCountryButton"
+        <Button
+        android:id="@+id/addCityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/systemColor"
-        android:text="Добавить Страну"
+        android:text="Добавить Город"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
         app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flagInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/countrySelectorLayout" />
 
     <TextView
-        android:id="@+id/labelAddedCountries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Внесенные страны"
-        android:textColor="@color/systemColor"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addCountryButton" />
+    android:id="@+id/labelAddedCities"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Внесенные города"
+    android:textColor="@color/systemColor"
+    android:textStyle="bold"
+    android:textSize="18sp"
+    android:layout_marginTop="32dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/addCityButton" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/countriesRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_country"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelAddedCountries" />
+    android:id="@+id/citiesRecyclerView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginTop="8dp"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:listitem="@layout/item_city"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/labelAddedCities" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

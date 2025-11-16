@@ -15,9 +15,13 @@ class PersonFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val linkToCountry = view.findViewById<Button>(R.id.linkToCountryButton)
+        val linkToCity = view.findViewById<Button>(R.id.linkToCityButton)
 
         linkToCountry.setOnClickListener {
             it.findNavController().navigate(R.id.action_personFragment_to_countryFragment)
+        }
+        linkToCity.setOnClickListener {
+            it.findNavController().navigate(R.id.action_personFragment_to_cityFragment)
         }
     }
 

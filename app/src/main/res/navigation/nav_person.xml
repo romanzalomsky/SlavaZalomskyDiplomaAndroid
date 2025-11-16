@@ -17,6 +17,11 @@
             app:destination="@id/countryFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_personFragment_to_cityFragment"
+            app:destination="@id/cityFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/countryFragment"
@@ -26,6 +31,17 @@
         <action
             android:id="@+id/action_countryFragment_to_personFragment"
             app:destination="@id/personFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.admin_settings.city.CityFragment"
+        android:label="fragment_city"
+        tools:layout="@layout/fragment_city" >
+        <action
+            android:id="@+id/action_cityFragment_to_personFragment"
+            app:destination="@id/personFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
 
