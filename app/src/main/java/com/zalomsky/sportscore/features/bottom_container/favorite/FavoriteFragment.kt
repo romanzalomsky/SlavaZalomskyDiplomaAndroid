@@ -1,4 +1,4 @@
-package com.zalomsky.sportscore.features.favorite
+package com.zalomsky.sportscore.features.bottom_container.favorite
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

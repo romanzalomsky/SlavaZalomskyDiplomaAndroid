@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
     alias(libs.plugins.androidx.navigation.safeargs)
+    kotlin("kapt")
 }
 
 android {
@@ -40,6 +41,10 @@ android {
 }
 
 dependencies {
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+
     implementation(libs.hilt.android)
     /*    ksp(libs.hilt.androidx.compiler)*/
     ksp(libs.hilt.compiler)

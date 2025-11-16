@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_person"
+    app:startDestination="@id/personFragment">
+
+
+    <fragment
+    android:id="@+id/personFragment"
+    android:name="com.zalomsky.sportscore.features.bottom_container.person.PersonFragment"
+    android:label="@string/bottom_nav_personId"
+        tools:layout="@layout/fragment_person" >
+
+        <action
+            android:id="@+id/action_personFragment_to_countryFragment"
+            app:destination="@id/countryFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/countryFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.admin_settings.country.CountryFragment"
+        android:label="fragment_country"
+        tools:layout="@layout/fragment_country" >
+        <action
+            android:id="@+id/action_countryFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+    </fragment>
+
+
+</navigation>

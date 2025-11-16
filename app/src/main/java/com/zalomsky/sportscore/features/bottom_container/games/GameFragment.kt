@@ -1,4 +1,4 @@
-package com.zalomsky.sportscore.features.games
+package com.zalomsky.sportscore.features.bottom_container.games
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,21 +28,6 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnClickListener { item ->
-            when(item.id){
-                R.id.nav_games -> {
-                    true
-                }
-                R.id.nav_favorite -> {
-                    view.findNavController().navigate(R.id.action_gameFragment_to_favoriteFragment)
-                    true
-                }
-                R.id.nav_person -> {
-                    view.findNavController().navigate(R.id.action_gameFragment_to_personFragment)
-                    true
-                }
-                else -> false
-            }
-        }
+
     }
 }
