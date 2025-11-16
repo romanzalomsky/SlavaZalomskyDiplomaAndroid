@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.api.CountryApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.utils.PreferenceManager
@@ -82,4 +83,9 @@ class SingletonModule {
     @Provides
     fun provideCountryApiService(retrofit: Retrofit): CountryApi =
         retrofit.create(CountryApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCityApiService(retrofit: Retrofit): CityApi =
+        retrofit.create(CityApi::class.java)
 }
