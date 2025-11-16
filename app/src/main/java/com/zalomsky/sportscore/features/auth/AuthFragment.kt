@@ -72,7 +72,7 @@ class AuthFragment : Fragment() {
         viewModel.getLogin(
             loginRequest,
             onSuccess = {
-                findNavController().navigate(R.id.action_authFragment_to_gameFragment)
+                findNavController().navigate(R.id.action_authFragment_to_homeFragment)
             },
             onError = {
                 Toast.makeText(requireContext(), "Что с ебалом)))", Toast.LENGTH_SHORT).show()

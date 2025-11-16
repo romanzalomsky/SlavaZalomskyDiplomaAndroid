@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.zalomsky.sportscore.api.CountryApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.utils.PreferenceManager
 import com.zalomsky.sportscore.utils.TokenManager
@@ -44,6 +45,7 @@ class SingletonModule {
 
         val tokenInterceptor = Interceptor { chain ->
             val originalRequest = chain.request()
+
             val token = preferenceManager.getToken()
 
             if (token != null) {
@@ -64,15 +66,20 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitBuilder(): Retrofit.Builder =
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8080")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     @Singleton
     @Provides
-    fun provideUserApiService(retrofit: Retrofit.Builder): UserApi =
-        retrofit
-            .build()
-            .create(UserApi::class.java)
+    fun provideUserApiService(retrofit: Retrofit): UserApi =
+        retrofit.create(UserApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCountryApiService(retrofit: Retrofit): CountryApi =
+        retrofit.create(CountryApi::class.java)
 }
