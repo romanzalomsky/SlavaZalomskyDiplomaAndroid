@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.CityModel
 import com.zalomsky.sportscore.domain.models.CityResponseModel
 import com.zalomsky.sportscore.domain.models.Country
-import com.zalomsky.sportscore.domain.usecase.CityUseCase
-import com.zalomsky.sportscore.domain.usecase.CountryUseCase
-import com.zalomsky.sportscore.domain.usecase.InsertCityUseCase
+import com.zalomsky.sportscore.domain.usecase.city.CityUseCase
+import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
+import com.zalomsky.sportscore.domain.usecase.city.InsertCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

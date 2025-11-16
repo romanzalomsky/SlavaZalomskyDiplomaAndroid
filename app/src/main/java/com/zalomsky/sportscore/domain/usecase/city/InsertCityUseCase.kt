@@ -1,4 +1,4 @@
-package com.zalomsky.sportscore.domain.usecase
+package com.zalomsky.sportscore.domain.usecase.city
 
 import com.zalomsky.sportscore.data.CityRepositoryImpl
 import com.zalomsky.sportscore.domain.models.CityModel

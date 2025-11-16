@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.Country
-import com.zalomsky.sportscore.domain.usecase.CountryUseCase
-import com.zalomsky.sportscore.domain.usecase.InsertCountryUseCase
+import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
+import com.zalomsky.sportscore.domain.usecase.country.InsertCountryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

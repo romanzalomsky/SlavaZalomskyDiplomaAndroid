@@ -1,12 +1,11 @@
-package com.zalomsky.sportscore.domain.usecase
+package com.zalomsky.sportscore.domain.usecase.country
 
 import com.zalomsky.sportscore.data.CountryRepositoryImpl
 import com.zalomsky.sportscore.domain.models.Country
 import javax.inject.Inject
 
-class InsertCountryUseCase @Inject constructor(
+class CountryUseCase @Inject constructor(
     private val countryRepositoryImpl: CountryRepositoryImpl
 ) {
-
-    suspend operator fun invoke(country: Country) = countryRepositoryImpl.insertCountry(country)
+    suspend operator fun invoke(): List<Country> = countryRepositoryImpl.getCountries()
 }
