@@ -16,12 +16,16 @@ class PersonFragment : Fragment() {
 
         val linkToCountry = view.findViewById<Button>(R.id.linkToCountryButton)
         val linkToCity = view.findViewById<Button>(R.id.linkToCityButton)
+        val linkToLeague = view.findViewById<Button>(R.id.linkToLeagueButton)
 
         linkToCountry.setOnClickListener {
             it.findNavController().navigate(R.id.action_personFragment_to_countryFragment)
         }
         linkToCity.setOnClickListener {
             it.findNavController().navigate(R.id.action_personFragment_to_cityFragment)
+        }
+        linkToLeague.setOnClickListener {
+            it.findNavController().navigate(R.id.action_personFragment_to_leagueFragment)
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.api.CountryApi
+import com.zalomsky.sportscore.api.LeagueApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.utils.PreferenceManager
 import com.zalomsky.sportscore.utils.TokenManager
@@ -88,4 +89,9 @@ class SingletonModule {
     @Provides
     fun provideCityApiService(retrofit: Retrofit): CityApi =
         retrofit.create(CityApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideLeagueApiService(retrofit: Retrofit): LeagueApi =
+        retrofit.create(LeagueApi::class.java)
 }
