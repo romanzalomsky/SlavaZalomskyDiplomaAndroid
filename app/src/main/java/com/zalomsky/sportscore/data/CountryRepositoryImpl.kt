@@ -11,4 +11,6 @@ class CountryRepositoryImpl @Inject constructor(
     suspend fun getCountries(): List<Country> = countryApi.getCountries()
 
     suspend fun insertCountry(country: Country) = countryApi.insertCountry(country)
+
+    suspend fun deleteCountry(countryId: String) = countryApi.deleteCountry(countryId)
 }

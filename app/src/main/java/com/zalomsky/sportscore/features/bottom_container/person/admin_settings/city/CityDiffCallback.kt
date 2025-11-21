@@ -1,7 +1,7 @@
 package com.zalomsky.sportscore.features.bottom_container.person.admin_settings.city
 
 import androidx.recyclerview.widget.DiffUtil
-import com.zalomsky.sportscore.domain.models.CityResponseModel
+import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 
 class CityDiffCallback(
     private val oldList: List<CityResponseModel>,

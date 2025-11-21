@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.models.LeagueModel
-import com.zalomsky.sportscore.domain.models.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
 import com.zalomsky.sportscore.domain.usecase.league.InsertLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase

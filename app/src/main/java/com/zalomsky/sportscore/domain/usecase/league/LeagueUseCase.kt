@@ -1,7 +1,7 @@
 package com.zalomsky.sportscore.domain.usecase.league
 
 import com.zalomsky.sportscore.data.LeagueRepositoryImpl
-import com.zalomsky.sportscore.domain.models.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import javax.inject.Inject
 
 class LeagueUseCase @Inject constructor(

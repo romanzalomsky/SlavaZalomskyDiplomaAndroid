@@ -7,6 +7,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.api.CountryApi
 import com.zalomsky.sportscore.api.LeagueApi
+import com.zalomsky.sportscore.api.PlayerApi
+import com.zalomsky.sportscore.api.TeamApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.utils.PreferenceManager
 import com.zalomsky.sportscore.utils.TokenManager
@@ -21,7 +23,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
 
@@ -94,4 +95,14 @@ class SingletonModule {
     @Provides
     fun provideLeagueApiService(retrofit: Retrofit): LeagueApi =
         retrofit.create(LeagueApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providePlayerApiService(retrofit: Retrofit): PlayerApi =
+        retrofit.create(PlayerApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideTeamApiService(retrofit: Retrofit): TeamApi =
+        retrofit.create(TeamApi::class.java)
 }

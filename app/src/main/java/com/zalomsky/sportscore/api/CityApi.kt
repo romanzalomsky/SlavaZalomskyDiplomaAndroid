@@ -1,7 +1,7 @@
 package com.zalomsky.sportscore.api
 
 import com.zalomsky.sportscore.domain.models.CityModel
-import com.zalomsky.sportscore.domain.models.CityResponseModel
+import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

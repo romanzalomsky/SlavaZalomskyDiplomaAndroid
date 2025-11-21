@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zalomsky.sportscore.R
-import com.zalomsky.sportscore.domain.models.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 
 class LeagueAdapter(
     private var leagues: List<LeagueResponseModel>

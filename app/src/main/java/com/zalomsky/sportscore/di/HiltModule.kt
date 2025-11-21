@@ -3,10 +3,14 @@ package com.zalomsky.sportscore.di
 import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.api.CountryApi
 import com.zalomsky.sportscore.api.LeagueApi
+import com.zalomsky.sportscore.api.PlayerApi
+import com.zalomsky.sportscore.api.TeamApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.data.CityRepositoryImpl
 import com.zalomsky.sportscore.data.CountryRepositoryImpl
 import com.zalomsky.sportscore.data.LeagueRepositoryImpl
+import com.zalomsky.sportscore.data.PlayerRepositoryImpl
+import com.zalomsky.sportscore.data.TeamRepositoryImpl
 import com.zalomsky.sportscore.data.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -32,4 +36,12 @@ class HiltModule {
     @Provides
     fun provideLeagueRepository(leagueApi: LeagueApi): LeagueRepositoryImpl =
         LeagueRepositoryImpl(leagueApi)
+
+    @Provides
+    fun providePlayerRepository(playerApi: PlayerApi): PlayerRepositoryImpl =
+        PlayerRepositoryImpl(playerApi)
+
+    @Provides
+    fun provideTeamRepository(teamApi: TeamApi): TeamRepositoryImpl =
+        TeamRepositoryImpl(teamApi)
 }

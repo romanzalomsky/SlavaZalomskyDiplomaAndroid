@@ -1,7 +1,7 @@
 package com.zalomsky.sportscore.features.bottom_container.person.admin_settings.league
 
 import androidx.recyclerview.widget.DiffUtil
-import com.zalomsky.sportscore.domain.models.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 
 class LeagueDiffCallback(
     private val oldList: List<LeagueResponseModel>,

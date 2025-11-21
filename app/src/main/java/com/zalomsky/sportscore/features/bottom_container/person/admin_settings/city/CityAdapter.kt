@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
-import com.zalomsky.sportscore.domain.models.CityResponseModel
+import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 
 class CityAdapter(
     private var cities: List<CityResponseModel>

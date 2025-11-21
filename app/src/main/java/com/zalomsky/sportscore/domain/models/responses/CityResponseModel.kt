@@ -1,4 +1,4 @@
-package com.zalomsky.sportscore.domain.models
+package com.zalomsky.sportscore.domain.models.responses
 
 import android.annotation.SuppressLint
 import com.google.gson.annotations.SerializedName

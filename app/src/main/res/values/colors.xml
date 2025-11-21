@@ -5,4 +5,7 @@
     <color name="systemColor">#16AC00</color>
     <color name="textColor">#363636</color>
     <color name="iconColor">#0F23FF</color>
+    <color name="gradientStart">#4CAF50</color>
+    <color name="primaryBlue">#7B8FFF</color>
+    <color name="redColor">#FF0000</color>
 </resources>

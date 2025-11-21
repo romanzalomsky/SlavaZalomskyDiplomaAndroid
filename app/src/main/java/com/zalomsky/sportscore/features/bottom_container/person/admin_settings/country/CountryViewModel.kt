@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
+import com.zalomsky.sportscore.domain.usecase.country.DeleteCountryUseCase
 import com.zalomsky.sportscore.domain.usecase.country.InsertCountryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CountryViewModel @Inject constructor(
     private val countryUseCase: CountryUseCase,
-    private val insertCountryUseCase: InsertCountryUseCase
+    private val insertCountryUseCase: InsertCountryUseCase,
+    private val deleteCountryUseCase: DeleteCountryUseCase
 ): ViewModel() {
 
     private val _country = MutableStateFlow<Country?>(null)
@@ -47,6 +49,18 @@ class CountryViewModel @Inject constructor(
                 onSuccess()
             } catch (e: Exception) {
                 Log.e("asdfghjk", "Exception during request -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun deleteCountry(countryId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                deleteCountryUseCase(countryId)
+                onSuccess()
+                getCountriesList()
+            } catch (e: Exception) {
+                Log.e("CountryViewModel", "Exception during country deletion -> ${e.localizedMessage}")
             }
         }
     }

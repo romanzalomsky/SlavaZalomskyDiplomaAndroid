@@ -13,14 +13,3 @@ data class LeagueModel(
     @SerializedName("teams") val leagueTeams: String,
     @SerializedName("countryId") val countryId: String
 )
-
-@SuppressLint("UnsafeOptInUsageError")
-@Serializable
-data class LeagueResponseModel(
-    @SerializedName("id") val id: String,
-    @SerializedName("leagueName") val leagueName: String,
-    @SerializedName("leagueImage") val leagueImage: String,
-    @SerializedName("teams") val leagueTeams: String,
-    @SerializedName("countryId") val countryId: String,
-    @SerializedName("countryName") val countryName: String
-)

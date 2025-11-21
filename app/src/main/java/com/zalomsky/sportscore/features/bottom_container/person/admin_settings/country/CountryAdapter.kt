@@ -3,6 +3,7 @@ package com.zalomsky.sportscore.features.bottom_container.person.admin_settings.
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,12 +13,14 @@ import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.Country
 
 class CountryAdapter(
-    private var countries: List<Country>
+    private var countries: List<Country>,
+    private val onDeleteClicked: (Country) -> Unit
 ) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
 
     class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val countryNameText: TextView = view.findViewById(R.id.countryNameText)
-        val countryFlagImage: ImageView = view.findViewById(R.id.countryFlagImage)
+        val countryFlagImage: ImageView = view.findViewById(R.id.countryFlagImageView)
+        val deleteButton: ImageButton = view.findViewById(R.id.deleteCountryButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
@@ -36,6 +39,10 @@ class CountryAdapter(
             .placeholder(R.drawable.ic_download)
             .error(R.drawable.ic_pause)
             .into(holder.countryFlagImage)
+
+        holder.deleteButton.setOnClickListener {
+            onDeleteClicked(country)
+        }
     }
 
     override fun getItemCount(): Int = countries.size
@@ -45,23 +52,5 @@ class CountryAdapter(
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.countries = newCountries
         diffResult.dispatchUpdatesTo(this)
-    }
-}
-
-class CountryDiffCallback(
-    private val oldList: List<Country>,
-    private val newList: List<Country>
-) : DiffUtil.Callback() {
-
-    override fun getOldListSize(): Int = oldList.size
-
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

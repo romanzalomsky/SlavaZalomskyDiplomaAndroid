@@ -1,7 +1,7 @@
 package com.zalomsky.sportscore.api
 
 import com.zalomsky.sportscore.domain.models.LoginRequest
-import com.zalomsky.sportscore.domain.models.LoginResponse
+import com.zalomsky.sportscore.domain.models.responses.LoginResponse
 import com.zalomsky.sportscore.domain.models.User
 import retrofit2.Response
 import retrofit2.http.Body

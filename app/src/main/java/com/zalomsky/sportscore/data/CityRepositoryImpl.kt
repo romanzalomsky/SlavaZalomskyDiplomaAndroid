@@ -2,7 +2,7 @@ package com.zalomsky.sportscore.data
 
 import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.domain.models.CityModel
-import com.zalomsky.sportscore.domain.models.CityResponseModel
+import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 import javax.inject.Inject
 
 class CityRepositoryImpl @Inject constructor(

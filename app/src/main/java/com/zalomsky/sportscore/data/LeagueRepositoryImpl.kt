@@ -2,7 +2,7 @@ package com.zalomsky.sportscore.data
 
 import com.zalomsky.sportscore.api.LeagueApi
 import com.zalomsky.sportscore.domain.models.LeagueModel
-import com.zalomsky.sportscore.domain.models.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import javax.inject.Inject
 
 class LeagueRepositoryImpl @Inject constructor(
