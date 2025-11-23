@@ -79,7 +79,7 @@
         android:id="@+id/linkToLeagueButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:text="Настройки лиг"
+        android:text="Настройки турниров"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/systemColor"
         android:textAlignment="viewStart"
@@ -128,23 +128,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linkToTeamButton" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/linkToTournamentButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/systemColor"
-        android:text="Настройки турниров"
-        android:textColor="@android:color/white"
-        android:textAlignment="viewStart"
-        android:paddingStart="24dp"
-        app:iconGravity="start"
-        app:iconTint="@android:color/white"
-        app:iconPadding="16dp"
-        app:cornerRadius="12dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linkToPlayerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

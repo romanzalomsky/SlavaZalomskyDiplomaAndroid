@@ -12,7 +12,8 @@ import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 
 class LeagueAdapter(
-    private var leagues: List<LeagueResponseModel>
+    private var leagues: List<LeagueResponseModel>,
+    private val onItemClick: (leagueId: String) -> Unit
 ) : RecyclerView.Adapter<LeagueAdapter.LeagueViewHolder>() {
 
     class LeagueViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -38,6 +39,10 @@ class LeagueAdapter(
             .placeholder(R.drawable.ic_download)
             .error(R.drawable.ic_pause)
             .into(holder.leagueImageView)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(league.id)
+        }
     }
 
     override fun getItemCount(): Int = leagues.size

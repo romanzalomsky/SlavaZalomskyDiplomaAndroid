@@ -9,8 +9,10 @@ import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.models.LeagueModel
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
+import com.zalomsky.sportscore.domain.usecase.league.GetLeagueByIdUseCase
 import com.zalomsky.sportscore.domain.usecase.league.InsertLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase
+import com.zalomsky.sportscore.domain.usecase.league.UpdateLeagueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +22,9 @@ import javax.inject.Inject
 class LeagueViewModel @Inject constructor(
     private val leagueUseCase: LeagueUseCase,
     private val insertLeagueUseCase: InsertLeagueUseCase,
-    private val countryUseCase: CountryUseCase
+    private val countryUseCase: CountryUseCase,
+    private val getLeagueByIdUseCase: GetLeagueByIdUseCase,
+    private val updateLeagueUseCase: UpdateLeagueUseCase
 ): ViewModel() {
 
     private val _leagues = MutableLiveData<List<LeagueResponseModel>>()
@@ -30,6 +34,10 @@ class LeagueViewModel @Inject constructor(
     private val _countries = MutableLiveData<List<Country>>()
     val countries: LiveData<List<Country>>
         get() = _countries
+
+    private val _currentLeague = MutableLiveData<LeagueResponseModel?>()
+    val currentLeague: LiveData<LeagueResponseModel?>
+        get() = _currentLeague
 
     fun getCountriesList() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,6 +69,35 @@ class LeagueViewModel @Inject constructor(
                 getLeaguesList()
             } catch (e: Exception) {
                 Log.e("LeagueViewModel", "Exception during league creation -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun getLeagueDetails(leagueId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val league = getLeagueByIdUseCase(leagueId)
+                _currentLeague.postValue(league)
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception getting league details -> ${e.localizedMessage}")
+                _currentLeague.postValue(null)
+            }
+        }
+    }
+
+    fun updateLeague(leagueId: String, league: LeagueModel, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                val response = updateLeagueUseCase(leagueId, league)
+
+                if (response.isSuccessful) {
+                    onSuccess()
+                    getLeaguesList()
+                } else {
+                    Log.e("LeagueViewModel", "Update failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception during league update -> ${e.localizedMessage}")
             }
         }
     }

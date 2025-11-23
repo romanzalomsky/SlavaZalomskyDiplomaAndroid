@@ -12,4 +12,8 @@ class LeagueRepositoryImpl @Inject constructor(
     suspend fun getLeagues(): List<LeagueResponseModel> = leagueApi.getLeagues()
 
     suspend fun insertLeague(league: LeagueModel) = leagueApi.insertLeague(league)
+
+    suspend fun getLeagueById(leagueId: String): LeagueResponseModel = leagueApi.getLeagueById(leagueId)
+
+    suspend fun updateLeague(leagueId: String, league: LeagueModel) = leagueApi.updateLeague(leagueId, league)
 }

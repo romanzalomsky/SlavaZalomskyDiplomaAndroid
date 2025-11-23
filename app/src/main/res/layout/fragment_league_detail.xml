@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -5,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".features.bottom_container.person.admin_settings.league.LeagueFragment">
+    tools:context=".features.bottom_container.person.admin_settings.league.LeagueDetailsFragment">
 
     <TextView
-        android:id="@+id/titleLeagueMenu"
+        android:id="@+id/titleLeagueDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Настройка лиг"
+        android:text="Редактирование Лиги"
         android:textColor="@color/systemColor"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -20,45 +21,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/labelAddLeague"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Добавить новую лигу"
-        android:textColor="@color/systemColor"
-        android:textSize="16sp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLeagueMenu" />
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/leagueNameInputLayout"
+        android:id="@+id/leagueNameInputLayoutDetails"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelAddLeague">
+        app:layout_constraintTop_toBottomOf="@+id/titleLeagueDetails">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/leagueNameEditText"
+            android:id="@+id/leagueNameEditTextDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название лиги (например, АПЛ)"
+            android:hint="Название лиги"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/leagueImageInputLayout"
+        android:id="@+id/leagueImageInputLayoutDetails"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leagueNameInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/leagueNameInputLayoutDetails">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/leagueImageEditText"
+            android:id="@+id/leagueImageEditTextDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ссылка на логотип (URL)"
@@ -66,16 +56,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/countryLeagueSelectorLayout"
+        android:id="@+id/countryLeagueSelectorLayoutDetails"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leagueImageInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/leagueImageInputLayoutDetails">
         <AutoCompleteTextView
-            android:id="@+id/countryAutoCompleteTextViewLeague"
+            android:id="@+id/countryAutoCompleteTextViewLeagueDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Выберите Страну"
@@ -83,38 +73,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/addLeagueButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/systemColor"
-        android:text="Добавить Лигу"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countryLeagueSelectorLayout" />
-
-    <TextView
-        android:id="@+id/labelAddedLeagues"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Внесенные лиги"
-        android:textColor="@color/systemColor"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addLeagueButton" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/leaguesRecyclerView"
+        android:id="@+id/updateLeagueButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_league"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/systemColor"
+        android:text="Обновить Лигу"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelAddedLeagues" />
+        app:layout_constraintTop_toBottomOf="@+id/countryLeagueSelectorLayoutDetails" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

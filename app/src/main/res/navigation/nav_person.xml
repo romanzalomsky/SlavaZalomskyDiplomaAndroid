@@ -66,6 +66,9 @@
             app:destination="@id/personFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_leagueFragment_to_leagueDetailsFragment"
+            app:destination="@id/leagueDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
@@ -86,5 +89,15 @@
             app:destination="@id/personFragment" />
     </fragment>
 
-
+    <fragment
+        android:id="@+id/leagueDetailsFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.admin_settings.league.LeagueDetailFragment"
+        android:label="LeagueDetailsFragment" >
+        <argument
+            android:name="leagueId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_leagueDetailsFragment_to_leagueFragment"
+            app:destination="@id/leagueFragment" />
+    </fragment>
 </navigation>

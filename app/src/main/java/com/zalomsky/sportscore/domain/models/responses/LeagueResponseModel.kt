@@ -10,7 +10,7 @@ data class LeagueResponseModel(
     @SerializedName("id") val id: String,
     @SerializedName("leagueName") val leagueName: String,
     @SerializedName("leagueImage") val leagueImage: String,
-    @SerializedName("teams") val leagueTeams: String,
+    @SerializedName("leagueTeams") val leagueTeams: List<TeamResponseModel>,
     @SerializedName("countryId") val countryId: String,
     @SerializedName("countryName") val countryName: String
 )

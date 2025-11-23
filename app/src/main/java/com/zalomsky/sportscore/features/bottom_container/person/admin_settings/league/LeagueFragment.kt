@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -44,12 +45,20 @@ class LeagueFragment : Fragment() {
 
         val leagueNameEt = view.findViewById<TextInputEditText>(R.id.leagueNameEditText)
         val leagueImageEt = view.findViewById<TextInputEditText>(R.id.leagueImageEditText)
-        val leagueTeamsEt = view.findViewById<TextInputEditText>(R.id.leagueTeamsEditText)
 
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextViewLeague)
         val addButton = view.findViewById<Button>(R.id.addLeagueButton)
 
-        leagueAdapter = LeagueAdapter(emptyList())
+        leagueAdapter = LeagueAdapter(
+            emptyList(),
+            onItemClick = { leagueId ->
+                findNavController().navigate(
+                    LeagueFragmentDirections.actionLeagueFragmentToLeagueDetailsFragment(leagueId)
+                )
+            }
+
+        )
+
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -90,23 +99,20 @@ class LeagueFragment : Fragment() {
         addButton.setOnClickListener {
             val name = leagueNameEt.text.toString().trim()
             val image = leagueImageEt.text.toString().trim()
-            val teams = leagueTeamsEt.text.toString().trim()
             val countryId = selectedCountryId
 
-            if (name.isNotEmpty() && image.isNotEmpty() && teams.isNotEmpty() && !countryId.isNullOrEmpty()) {
+            if (name.isNotEmpty() && image.isNotEmpty() && !countryId.isNullOrEmpty()) {
 
                 val newLeague = LeagueModel(
                     id = "",
                     leagueName = name,
                     leagueImage = image,
-                    leagueTeams = teams,
                     countryId = countryId
                 )
 
                 viewModel.addLeague(newLeague) {
                     leagueNameEt.setText("")
                     leagueImageEt.setText("")
-                    leagueTeamsEt.setText("")
                     countrySelector.setText("")
                     selectedCountryId = null
                     Toast.makeText(context, "Лига '${name}' успешно добавлена!", Toast.LENGTH_SHORT).show()
