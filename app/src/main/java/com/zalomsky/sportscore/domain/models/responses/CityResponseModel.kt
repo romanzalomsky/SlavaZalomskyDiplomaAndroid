@@ -10,5 +10,6 @@ data class CityResponseModel(
     @SerializedName("id") val id: String,
     @SerializedName("name") val name: String,
     @SerializedName("countryId") val countryId: String,
-    @SerializedName("countryName") val countryName: String
+    @SerializedName("countryName") val countryName: String,
+    @SerializedName("countryFlag") val countryFlag: String,
 )

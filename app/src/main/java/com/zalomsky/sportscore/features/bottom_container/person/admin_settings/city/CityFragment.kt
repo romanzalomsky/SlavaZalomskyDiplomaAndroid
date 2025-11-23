@@ -13,10 +13,13 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.CityModel
 import com.zalomsky.sportscore.domain.models.Country
+import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
+import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.country.CountryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +41,9 @@ class CityFragment : Fragment() {
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextView)
         val addButton = view.findViewById<Button>(R.id.addCityButton)
 
-        cityAdapter = CityAdapter(emptyList())
+        cityAdapter = CityAdapter(emptyList()) { cityToDelete ->
+            showDeleteConfirmationDialog(cityToDelete)
+        }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -94,6 +99,21 @@ class CityFragment : Fragment() {
                 Toast.makeText(context, "Заполните оба поля!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showDeleteConfirmationDialog(city: CityResponseModel) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Подтверждение удаления")
+            .setMessage("Вы уверены, что хотите удалить город '${city.name}'?")
+            .setPositiveButton("Удалить") { dialog, which ->
+                viewModel.deleteCity(city.id) {
+                    Toast.makeText(context, "Город '${city.name}' удален!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Отмена") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onCreateView(

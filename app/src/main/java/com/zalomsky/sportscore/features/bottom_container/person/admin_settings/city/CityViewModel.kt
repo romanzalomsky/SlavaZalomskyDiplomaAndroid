@@ -9,6 +9,7 @@ import com.zalomsky.sportscore.domain.models.CityModel
 import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.usecase.city.CityUseCase
+import com.zalomsky.sportscore.domain.usecase.city.DeleteCityUseCase
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
 import com.zalomsky.sportscore.domain.usecase.city.InsertCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class CityViewModel @Inject constructor(
     private val cityUseCase: CityUseCase,
     private val insertCityUseCase: InsertCityUseCase,
-    private val countryUseCase: CountryUseCase
+    private val countryUseCase: CountryUseCase,
+    private val deleteCityUseCase: DeleteCityUseCase
 ): ViewModel() {
 
     private val _cities = MutableLiveData<List<CityResponseModel>>()
@@ -61,6 +63,18 @@ class CityViewModel @Inject constructor(
                 getCitiesList()
             } catch (e: Exception) {
                 Log.e("CityViewModel", "Exception during city creation -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun deleteCity(cityId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                deleteCityUseCase(cityId)
+                onSuccess()
+                getCountriesList()
+            } catch (e: Exception) {
+                Log.e("CityViewModel", "Exception during country deletion -> ${e.localizedMessage}")
             }
         }
     }

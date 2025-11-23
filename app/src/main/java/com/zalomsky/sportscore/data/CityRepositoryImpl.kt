@@ -11,4 +11,6 @@ class CityRepositoryImpl @Inject constructor(
     suspend fun getCities(): List<CityResponseModel> = cityApi.getCities()
 
     suspend fun insertCity(city: CityModel) = cityApi.insertCity(city)
+
+    suspend fun deleteCity(cityId: String) = cityApi.deleteCity(cityId)
 }

@@ -7,5 +7,4 @@ class DeleteCountryUseCase @Inject constructor(
     private val countryRepositoryImpl: CountryRepositoryImpl
 ) {
     suspend operator fun invoke(countryId: String) = countryRepositoryImpl.deleteCountry(countryId)
-
 }
