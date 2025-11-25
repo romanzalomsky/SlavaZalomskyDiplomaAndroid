@@ -71,23 +71,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/leagueSelectorLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teamImageInputLayout">
-            <AutoCompleteTextView
-                android:id="@+id/leagueAutoCompleteTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Выберите Лигу"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/teamCreationDateInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
@@ -95,7 +78,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/leagueSelectorLayout">
+            app:layout_constraintTop_toBottomOf="@+id/teamImageInputLayout">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/teamCreationDateEditText"
                 android:layout_width="match_parent"
@@ -139,7 +122,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/citySelectorLayout"
+            android:id="@+id/citySelectorLayoutTeam"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,16 +139,16 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/countrySelectorLayout"
+            android:id="@+id/countrySelectorLayoutTeam"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/citySelectorLayout">
+            app:layout_constraintTop_toBottomOf="@+id/citySelectorLayoutTeam">
             <AutoCompleteTextView
-                android:id="@+id/countryAutoCompleteTextView"
+                android:id="@+id/countryAutoCompleteTextViewTeam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Выберите Страну"
@@ -181,7 +164,7 @@
             android:text="Добавить Команду"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countrySelectorLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/countrySelectorLayoutTeam" />
 
         <TextView
             android:id="@+id/labelAddedTeams"
