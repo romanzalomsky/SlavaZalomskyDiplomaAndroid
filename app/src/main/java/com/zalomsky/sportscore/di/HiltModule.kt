@@ -34,8 +34,8 @@ class HiltModule {
         CityRepositoryImpl(cityApi)
 
     @Provides
-    fun provideLeagueRepository(leagueApi: LeagueApi): LeagueRepositoryImpl =
-        LeagueRepositoryImpl(leagueApi)
+    fun provideLeagueRepository(leagueApi: LeagueApi, teamApi: TeamApi): LeagueRepositoryImpl =
+        LeagueRepositoryImpl(leagueApi, teamApi)
 
     @Provides
     fun providePlayerRepository(playerApi: PlayerApi): PlayerRepositoryImpl =

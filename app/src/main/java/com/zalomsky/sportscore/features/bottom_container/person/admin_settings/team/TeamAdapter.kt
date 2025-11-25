@@ -58,4 +58,6 @@ class TeamAdapter(
         this.teams = newTeams
         diffResult.dispatchUpdatesTo(this)
     }
+
+
 }
