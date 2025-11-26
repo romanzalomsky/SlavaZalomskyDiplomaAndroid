@@ -13,28 +13,11 @@
         tools:layout="@layout/fragment_person" >
 
         <action
-            android:id="@+id/action_personFragment_to_countryFragment"
-            app:destination="@id/countryFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_personFragment_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
         <action
-            android:id="@+id/action_personFragment_to_cityFragment"
-            app:destination="@id/cityFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_personFragment_to_leagueFragment"
-            app:destination="@id/leagueFragment" />
-        <action
-            android:id="@+id/action_personFragment_to_playerFragment"
-            app:destination="@id/playerFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_personFragment_to_teamFragment2"
-            app:destination="@id/teamFragment2"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_personFragment_to_userPersonFragment"
+            app:destination="@id/userPersonFragment" />
     </fragment>
     <fragment
         android:id="@+id/countryFragment"
@@ -42,8 +25,8 @@
         android:label="fragment_country"
         tools:layout="@layout/fragment_country" >
         <action
-            android:id="@+id/action_countryFragment_to_personFragment"
-            app:destination="@id/personFragment" />
+            android:id="@+id/action_countryFragment_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
     </fragment>
     <fragment
         android:id="@+id/cityFragment"
@@ -51,10 +34,8 @@
         android:label="fragment_city"
         tools:layout="@layout/fragment_city" >
         <action
-            android:id="@+id/action_cityFragment_to_personFragment"
-            app:destination="@id/personFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_cityFragment_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
     </fragment>
     <fragment
         android:id="@+id/leagueFragment"
@@ -62,13 +43,11 @@
         android:label="fragment_league"
         tools:layout="@layout/fragment_league" >
         <action
-            android:id="@+id/action_leagueFragment_to_personFragment"
-            app:destination="@id/personFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-        <action
             android:id="@+id/action_leagueFragment_to_leagueDetailsFragment"
             app:destination="@id/leagueDetailsFragment" />
+        <action
+            android:id="@+id/action_leagueFragment_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
@@ -76,8 +55,8 @@
         android:label="fragment_player"
         tools:layout="@layout/fragment_player" >
         <action
-            android:id="@+id/action_playerFragment_to_personFragment"
-            app:destination="@id/personFragment" />
+            android:id="@+id/action_playerFragment_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
     </fragment>
     <fragment
         android:id="@+id/teamFragment2"
@@ -85,8 +64,8 @@
         android:label="fragment_team"
         tools:layout="@layout/fragment_team" >
         <action
-            android:id="@+id/action_teamFragment2_to_personFragment"
-            app:destination="@id/personFragment" />
+            android:id="@+id/action_teamFragment2_to_adminPersonFragment"
+            app:destination="@id/adminPersonFragment" />
     </fragment>
 
     <fragment
@@ -99,5 +78,35 @@
         <action
             android:id="@+id/action_leagueDetailsFragment_to_leagueFragment"
             app:destination="@id/leagueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminPersonFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.admin_settings.AdminPersonFragment"
+        android:label="fragment_admin_person"
+        tools:layout="@layout/fragment_admin_person" >
+        <action
+            android:id="@+id/action_adminPersonFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_adminPersonFragment_to_cityFragment"
+            app:destination="@id/cityFragment" />
+        <action
+            android:id="@+id/action_adminPersonFragment_to_teamFragment2"
+            app:destination="@id/teamFragment2" />
+        <action
+            android:id="@+id/action_adminPersonFragment_to_countryFragment"
+            app:destination="@id/countryFragment" />
+        <action
+            android:id="@+id/action_adminPersonFragment_to_leagueFragment"
+            app:destination="@id/leagueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userPersonFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.user_settings.UserPersonFragment"
+        android:label="fragment_user_person"
+        tools:layout="@layout/fragment_user_person" >
+        <action
+            android:id="@+id/action_userPersonFragment_to_personFragment"
+            app:destination="@id/personFragment" />
     </fragment>
 </navigation>
