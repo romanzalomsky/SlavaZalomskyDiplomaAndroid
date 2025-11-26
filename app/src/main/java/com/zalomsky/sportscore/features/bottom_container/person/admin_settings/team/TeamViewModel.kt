@@ -5,15 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.sportscore.domain.models.CityModel
 import com.zalomsky.sportscore.domain.models.Country
-import com.zalomsky.sportscore.domain.models.PlayerModel
 import com.zalomsky.sportscore.domain.models.TeamModel
 import com.zalomsky.sportscore.domain.models.responses.CityResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import com.zalomsky.sportscore.domain.usecase.city.CityUseCase
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
-import com.zalomsky.sportscore.domain.usecase.country.InsertCountryUseCase
 import com.zalomsky.sportscore.domain.usecase.team.InsertTeamUseCase
 import com.zalomsky.sportscore.domain.usecase.team.TeamUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

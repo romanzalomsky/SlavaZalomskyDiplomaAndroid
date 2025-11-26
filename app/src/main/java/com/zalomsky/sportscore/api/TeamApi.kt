@@ -25,10 +25,14 @@ interface TeamApi {
         @Query("leagueId") leagueId: String
     ): List<TeamResponseModel>
 
+    @GET("/auth/teams/searchByName")
+    suspend fun searchTeamsSimple(
+        @Query("query") query: String
+    ): List<TeamResponseModel>
+
     @PUT("/auth/teams/{teamId}/assign")
     suspend fun assignTeamToLeague(
         @Path("teamId") teamId: String,
         @Body leagueIdWrapper: LeagueIdWrapper
     ): Response<Unit>
-
 }
