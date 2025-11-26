@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zalomsky.sportscore.R
-import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.team.TeamAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -24,9 +24,11 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var searchEditText: android.widget.EditText
     private lateinit var searchResultsRecyclerView: androidx.recyclerview.widget.RecyclerView
+    private lateinit var favoriteResultsRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var favoriteListTitleTextView: android.widget.TextView
 
-    private lateinit var searchAdapter: TeamAdapter
+    private lateinit var searchAdapter: FavoriteSearchTeamAdapter
+    private lateinit var favoriteAdapter: FavoriteTeamAdapter
     private var searchJob: Job? = null
     private val SEARCH_DELAY_MS = 500L
 
@@ -44,6 +46,7 @@ class FavoriteFragment : Fragment() {
 
         searchEditText = view.findViewById(R.id.searchEditText)
         searchResultsRecyclerView = view.findViewById(R.id.teamSearchResultsRecyclerView)
+        favoriteResultsRecyclerView = view.findViewById(R.id.favoriteTeamsRecyclerView)
         favoriteListTitleTextView = view.findViewById(R.id.favoriteListTitleTextView)
 
         return view
@@ -52,13 +55,27 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        favoriteAdapter = FavoriteTeamAdapter(emptyList())
         setupSearchRecyclerView()
+
+        favoriteResultsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = favoriteAdapter
+        }
+
         setupSearchListener()
         observeViewModel()
+
+        viewModel.loadFavoriteTeams()
     }
 
     private fun setupSearchRecyclerView() {
-        searchAdapter = TeamAdapter(emptyList())
+        searchAdapter = FavoriteSearchTeamAdapter(
+            teams = emptyList(),
+            onFavoriteClick = { team ->
+                viewModel.addTeamToFavorites(team.teamId)
+                searchEditText.setText("")
+            })
         searchResultsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = searchAdapter
@@ -91,7 +108,6 @@ class FavoriteFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.searchResults.observe(viewLifecycleOwner) { teams ->
-
             if (searchEditText.text.toString().trim().length < 2) {
                 return@observe
             }
@@ -101,11 +117,25 @@ class FavoriteFragment : Fragment() {
             if (teams.isNotEmpty()) {
                 searchResultsRecyclerView.visibility = View.VISIBLE
                 favoriteListTitleTextView.visibility = View.GONE
-
             } else {
                 searchResultsRecyclerView.visibility = View.GONE
 
-                favoriteListTitleTextView.visibility = View.GONE
+                favoriteListTitleTextView.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.favoriteTeams.observe(viewLifecycleOwner) { teamList ->
+
+            favoriteAdapter.updateList(teamList)
+
+            if (searchEditText.text.toString().trim().isEmpty()) {
+                favoriteListTitleTextView.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) { message ->
+            if (message.isNotEmpty()) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
         }
     }

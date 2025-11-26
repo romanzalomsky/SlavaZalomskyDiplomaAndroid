@@ -1,7 +1,9 @@
 package com.zalomsky.sportscore.api
 
+import com.zalomsky.sportscore.domain.models.FavoriteTeamRequest
 import com.zalomsky.sportscore.domain.models.LeagueIdWrapper
 import com.zalomsky.sportscore.domain.models.TeamModel
+import com.zalomsky.sportscore.domain.models.responses.BaseResponse
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -35,4 +37,10 @@ interface TeamApi {
         @Path("teamId") teamId: String,
         @Body leagueIdWrapper: LeagueIdWrapper
     ): Response<Unit>
+
+    @POST("/auth/favorites/add")
+    suspend fun addFavoriteTeam(@Body request: FavoriteTeamRequest): BaseResponse
+
+    @GET("/auth/favorites")
+    suspend fun getFavoriteTeams(): List<TeamResponseModel>
 }
