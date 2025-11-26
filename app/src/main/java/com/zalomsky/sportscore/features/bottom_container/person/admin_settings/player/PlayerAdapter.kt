@@ -19,8 +19,8 @@ class PlayerAdapter(
         val playerImageView: ImageView = view.findViewById(R.id.playerImageView)
         val playerNameText: TextView = view.findViewById(R.id.playerNameText)
         val playerPositionText: TextView = view.findViewById(R.id.playerPositionText)
-        val playerNationalityText: TextView = view.findViewById(R.id.playerNationalityText)
-        val playerCountryFlagView: ImageView = view.findViewById(R.id.playerCountryFlagView)
+        val playerTeamText: TextView = view.findViewById(R.id.playerTeamText)
+        val playerTeamFlagView: ImageView = view.findViewById(R.id.playerTeamFlagView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
@@ -37,7 +37,7 @@ class PlayerAdapter(
 
         holder.playerNameText.text = player.playerName
         holder.playerPositionText.text = player.playerPosition
-        holder.playerNationalityText.text = "(${player.countryName})"
+        holder.playerTeamText.text = player.teamName
 
         Glide.with(holder.playerImageView.context)
             .load(player.playerImage)
@@ -45,11 +45,12 @@ class PlayerAdapter(
             .error(R.drawable.ic_pause)
             .into(holder.playerImageView)
 
-        Glide.with(holder.playerCountryFlagView.context)
-            .load(player.countryImage)
+        Glide.with(holder.playerTeamFlagView.context)
+            .load(player.teamImage)
             .placeholder(R.drawable.ic_download)
             .error(R.drawable.ic_pause)
-            .into(holder.playerCountryFlagView)
+            .into(holder.playerTeamFlagView)
+
     }
 
     override fun getItemCount(): Int = players.size

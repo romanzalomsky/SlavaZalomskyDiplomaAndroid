@@ -50,19 +50,19 @@
             app:layout_constraintTop_toBottomOf="@+id/playerNameText">
 
             <ImageView
-                android:id="@+id/playerCountryFlagView"
+                android:id="@+id/playerTeamFlagView"
                 android:layout_width="20dp"  android:layout_height="14dp" android:layout_gravity="center_vertical"
                 android:scaleType="centerCrop"
                 android:background="#DDDDDD"
-                android:contentDescription="Флаг страны игрока" />
+                android:contentDescription="Флаг клуба игрока" />
 
             <TextView
-                android:id="@+id/playerNationalityText"
+                android:id="@+id/playerTeamText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp" android:textColor="@android:color/darker_gray"
                 android:textSize="14sp"
-                tools:text="Португалия" />
+                tools:text="Реал Мадрид" />
 
         </LinearLayout>
 
