@@ -11,7 +11,7 @@ data class PlayerResponseModel(
     @SerializedName("playerName") val playerName: String,
     @SerializedName("playerImage") val playerImage: String,
     @SerializedName("playerPosition") val playerPosition: String,
-    @SerializedName("countryId") val countryId: String,
-    @SerializedName("countryName") val countryName: String,
-    @SerializedName("countryImage") val countryImage: String
+    @SerializedName("teamId") val teamId: String,
+    @SerializedName("teamName") val teamName: String,
+    @SerializedName("teamImage") val teamImage: String,
 )
