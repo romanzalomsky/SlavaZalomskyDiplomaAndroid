@@ -10,6 +10,7 @@ import com.zalomsky.sportscore.api.LeagueApi
 import com.zalomsky.sportscore.api.PlayerApi
 import com.zalomsky.sportscore.api.TeamApi
 import com.zalomsky.sportscore.api.UserApi
+import com.zalomsky.sportscore.network.NetworkUtils.BASE_URL
 import com.zalomsky.sportscore.utils.PreferenceManager
 import com.zalomsky.sportscore.utils.TokenManager
 import dagger.Module
@@ -71,7 +72,7 @@ class SingletonModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
