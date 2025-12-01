@@ -3,12 +3,14 @@ package com.zalomsky.sportscore.di
 import com.zalomsky.sportscore.api.CityApi
 import com.zalomsky.sportscore.api.CountryApi
 import com.zalomsky.sportscore.api.LeagueApi
+import com.zalomsky.sportscore.api.MatchApi
 import com.zalomsky.sportscore.api.PlayerApi
 import com.zalomsky.sportscore.api.TeamApi
 import com.zalomsky.sportscore.api.UserApi
 import com.zalomsky.sportscore.data.CityRepositoryImpl
 import com.zalomsky.sportscore.data.CountryRepositoryImpl
 import com.zalomsky.sportscore.data.LeagueRepositoryImpl
+import com.zalomsky.sportscore.data.MatchRepositoryImpl
 import com.zalomsky.sportscore.data.PlayerRepositoryImpl
 import com.zalomsky.sportscore.data.TeamRepositoryImpl
 import com.zalomsky.sportscore.data.UserRepositoryImpl
@@ -44,4 +46,8 @@ class HiltModule {
     @Provides
     fun provideTeamRepository(teamApi: TeamApi): TeamRepositoryImpl =
         TeamRepositoryImpl(teamApi)
+
+    @Provides
+    fun provideMatchRepository(matchApi: MatchApi): MatchRepositoryImpl =
+        MatchRepositoryImpl(matchApi)
 }

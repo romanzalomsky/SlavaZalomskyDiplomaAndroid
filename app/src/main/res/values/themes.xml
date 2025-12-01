@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.Sportscore" parent="Base.Theme.Sportscore" />
+    <style name="Widget.App.Spinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">@drawable/spinner_outline_background</item>
+        <item name="android:overlapAnchor">true</item>
+    </style>
 </resources>
