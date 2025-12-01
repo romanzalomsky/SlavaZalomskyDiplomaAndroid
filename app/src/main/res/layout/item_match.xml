@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/dateTimeBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="15 Фев"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20:00"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#E0E0E0"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@+id/dateTimeBlock"
+            app:layout_constraintBottom_toBottomOf="@+id/dateTimeBlock"
+            app:layout_constraintStart_toEndOf="@+id/dateTimeBlock" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/homeTeamIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="Иконка домашней команды"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/homeTeamName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                tools:text="Реал Мадрид"
+                app:layout_constraintStart_toEndOf="@+id/homeTeamIcon"
+                app:layout_constraintTop_toTopOf="@+id/homeTeamIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/homeTeamIcon"
+                app:layout_constraintEnd_toStartOf="@+id/homeTeamScore" />
+
+            <TextView
+                android:id="@+id/homeTeamScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginEnd="8dp"
+                tools:text="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/homeTeamName"
+                app:layout_constraintBottom_toBottomOf="@+id/homeTeamName" />
+
+            <ImageView
+                android:id="@+id/awayTeamIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="Иконка гостевой команды"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeTeamIcon"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/awayTeamName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                tools:text="Барселона"
+                app:layout_constraintStart_toEndOf="@+id/awayTeamIcon"
+                app:layout_constraintTop_toTopOf="@+id/awayTeamIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/awayTeamIcon"
+                app:layout_constraintEnd_toStartOf="@+id/awayTeamScore" />
+
+            <TextView
+                android:id="@+id/awayTeamScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginEnd="8dp"
+                tools:text="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/awayTeamName"
+                app:layout_constraintBottom_toBottomOf="@+id/awayTeamName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
