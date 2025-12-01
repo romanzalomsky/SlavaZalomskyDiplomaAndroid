@@ -92,8 +92,9 @@ class GameFragment : Fragment() {
         if (leagues.isEmpty()) return
 
         val leagueNames = leagues.map { it.leagueName }
+        val context = requireContext()
         val adapter = ArrayAdapter(
-            requireContext(),
+            context,
             R.layout.spinner_selected_item,
             leagueNames
         ).apply {
@@ -103,7 +104,7 @@ class GameFragment : Fragment() {
         leagueSpinner.visibility = View.VISIBLE
 
         leagueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedLeague = leagues[position]
                 viewModel.loadLeagueSchedule(selectedLeague.id)
             }
