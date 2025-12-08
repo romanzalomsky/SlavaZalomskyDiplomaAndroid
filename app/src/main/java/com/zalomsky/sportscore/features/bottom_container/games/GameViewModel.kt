@@ -2,8 +2,8 @@ package com.zalomsky.sportscore.features.bottom_container.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
-import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeaguesUiState
+import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.schedule.GetFavoriteScheduleUseCase
 import com.zalomsky.sportscore.domain.usecase.schedule.GetScheduleUseCase
@@ -12,18 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-sealed class ScheduleUiState {
-    data object Loading : ScheduleUiState()
-    data class Success(val matches: List<MatchResponseModel>) : ScheduleUiState()
-    data class Error(val message: String) : ScheduleUiState()
-}
-
-sealed class LeaguesUiState {
-    data object Loading : LeaguesUiState()
-    data class Success(val leagues: List<LeagueResponseModel>) : LeaguesUiState()
-    data class Error(val message: String) : LeaguesUiState()
-}
 
 @HiltViewModel
 class GameViewModel @Inject constructor(

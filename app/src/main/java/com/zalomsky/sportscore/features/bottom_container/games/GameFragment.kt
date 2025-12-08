@@ -1,7 +1,6 @@
 package com.zalomsky.sportscore.features.bottom_container.games
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +9,17 @@ import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
-import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
-import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
+import com.zalomsky.sportscore.domain.models.responses.LeaguesUiState
+import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class GameFragment : Fragment() {

@@ -12,6 +12,8 @@ class TeamRepositoryImpl @Inject constructor(
 ) {
     suspend fun getTeams(): List<TeamResponseModel> = teamApi.getTeams()
 
+    suspend fun getTeamById(teamId: String): TeamResponseModel? = teamApi.getTeamById(teamId)
+
     suspend fun searchTeamsSimple(query: String): List<TeamResponseModel> =
         teamApi.searchTeamsSimple(query)
 

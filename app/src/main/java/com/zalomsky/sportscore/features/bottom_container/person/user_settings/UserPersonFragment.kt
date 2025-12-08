@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.features.bottom_container.favorite.FavoriteSearchTeamAdapter
@@ -53,7 +54,13 @@ class UserPersonFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favoriteAdapter = FavoriteTeamAdapter(emptyList())
+        favoriteAdapter = FavoriteTeamAdapter(
+            teams = emptyList(),
+            onItemClick = { team ->
+                val action = UserPersonFragmentDirections.actionUserPersonFragmentToTeamDetailFragment(team.teamId)
+                findNavController().navigate(action)
+            }
+        )
         setupSearchRecyclerView()
 
         favoriteResultsRecyclerView.apply {

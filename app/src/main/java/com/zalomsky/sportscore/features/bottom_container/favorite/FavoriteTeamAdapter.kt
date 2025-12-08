@@ -13,13 +13,13 @@ import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.team.TeamDiffCallBack
 
 class FavoriteTeamAdapter(
-    private var teams: List<TeamResponseModel>
+    private var teams: List<TeamResponseModel>,
+    private val onItemClick: (TeamResponseModel) -> Unit
 ): RecyclerView.Adapter<FavoriteTeamAdapter.TeamFavoriteViewHolder>() {
 
     class TeamFavoriteViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val teamNameText: TextView = view.findViewById(R.id.teamFavoriteNameTextView)
         val teamIconImage: ImageView = view.findViewById(R.id.teamFavoriteIconImageView)
-        /*val favoriteIcon: ImageView = view.findViewById(R.id.countrySimpleFlagImageView)*/
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -36,6 +36,10 @@ class FavoriteTeamAdapter(
     ) {
         val team = teams[position]
         holder.teamNameText.text = team.teamName
+
+        holder.itemView.setOnClickListener {
+            onItemClick(team)
+        }
 
         Glide.with(holder.teamIconImage.context)
             .load(team.teamIcon)

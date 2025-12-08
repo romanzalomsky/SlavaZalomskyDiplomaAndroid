@@ -1,28 +1,21 @@
 package com.zalomsky.sportscore.features.bottom_container.favorite
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
+import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
 import com.zalomsky.sportscore.features.bottom_container.games.GameViewModel
 import com.zalomsky.sportscore.features.bottom_container.games.MatchesAdapter
-import com.zalomsky.sportscore.features.bottom_container.games.ScheduleUiState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

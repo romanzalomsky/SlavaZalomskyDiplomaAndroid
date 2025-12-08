@@ -14,3 +14,9 @@ data class LeagueResponseModel(
     @SerializedName("countryId") val countryId: String,
     @SerializedName("countryName") val countryName: String
 )
+
+sealed class LeaguesUiState {
+    data object Loading : LeaguesUiState()
+    data class Success(val leagues: List<LeagueResponseModel>) : LeaguesUiState()
+    data class Error(val message: String) : LeaguesUiState()
+}

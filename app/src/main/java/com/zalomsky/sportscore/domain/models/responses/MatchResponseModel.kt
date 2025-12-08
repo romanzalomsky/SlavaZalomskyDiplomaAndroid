@@ -17,3 +17,9 @@ data class MatchResponseModel (
     @SerializedName("homeScore")val homeScore: Int? = null,
     @SerializedName("awayScore")val awayScore: Int? = null
 )
+
+sealed class ScheduleUiState {
+    data object Loading : ScheduleUiState()
+    data class Success(val matches: List<MatchResponseModel>) : ScheduleUiState()
+    data class Error(val message: String) : ScheduleUiState()
+}

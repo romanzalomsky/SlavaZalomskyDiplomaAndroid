@@ -18,6 +18,15 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <View
+            android:id="@+id/leagueSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
         <LinearLayout
             android:id="@+id/dateTimeBlock"
             android:layout_width="wrap_content"
@@ -25,7 +34,7 @@
             android:orientation="vertical"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leagueSeparator"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
@@ -63,8 +72,8 @@
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@+id/separator"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/dateTimeBlock"
+            app:layout_constraintBottom_toBottomOf="@+id/dateTimeBlock">
 
             <ImageView
                 android:id="@+id/homeTeamIcon"

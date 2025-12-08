@@ -108,5 +108,26 @@
         <action
             android:id="@+id/action_userPersonFragment_to_personFragment"
             app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_userPersonFragment_to_teamDetailFragment"
+            app:destination="@id/teamDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/teamDetailFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.person.user_settings.TeamDetailFragment"
+        android:label="fragment_team_detail"
+        tools:layout="@layout/fragment_team_detail" >
+        <action
+            android:id="@+id/action_teamDetailFragment_to_userPersonFragment"
+            app:destination="@id/userPersonFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="teamId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>
