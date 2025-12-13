@@ -14,12 +14,14 @@ import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.t
 
 class FavoriteTeamAdapter(
     private var teams: List<TeamResponseModel>,
-    private val onItemClick: (TeamResponseModel) -> Unit
+    private val onItemClick: (TeamResponseModel) -> Unit,
+    private val onDeleteClick: (String) -> Unit
 ): RecyclerView.Adapter<FavoriteTeamAdapter.TeamFavoriteViewHolder>() {
 
     class TeamFavoriteViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val teamNameText: TextView = view.findViewById(R.id.teamFavoriteNameTextView)
         val teamIconImage: ImageView = view.findViewById(R.id.teamFavoriteIconImageView)
+        val teamFavoriteDeleteIcon: ImageView = view.findViewById(R.id.teamFavoriteDeleteIcon)
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,6 +41,10 @@ class FavoriteTeamAdapter(
 
         holder.itemView.setOnClickListener {
             onItemClick(team)
+        }
+
+        holder.teamFavoriteDeleteIcon.setOnClickListener {
+            onDeleteClick(team.teamId)
         }
 
         Glide.with(holder.teamIconImage.context)

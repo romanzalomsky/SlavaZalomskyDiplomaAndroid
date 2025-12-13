@@ -17,6 +17,7 @@ import com.zalomsky.sportscore.domain.usecase.league.UpdateLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.team.AssignTeamToLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.team.GetTeamsByLeagueIdUseCase
 import com.zalomsky.sportscore.domain.usecase.team.SearchTeamsUseCase
+import com.zalomsky.sportscore.notions.Notifier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class LeagueViewModel @Inject constructor(
     private val searchTeamsUseCase: SearchTeamsUseCase,
     private val assignTeamToLeagueUseCase: AssignTeamToLeagueUseCase,
     private val getTeamsByLeagueIdUseCase: GetTeamsByLeagueIdUseCase,
+    private val notifier: Notifier
 ): ViewModel() {
 
     private val _leagues = MutableLiveData<List<LeagueResponseModel>>()
@@ -79,12 +81,14 @@ class LeagueViewModel @Inject constructor(
 
     fun getLeaguesList() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val leagues = leagueUseCase()
-                _leagues.postValue(leagues)
-            } catch (e: Exception) {
-                Log.e("LeagueViewModel", "Exception during request -> ${e.localizedMessage}")
-            }
+            leagueUseCase()
+                .onSuccess { leagues ->
+                    _leagues.postValue(leagues)
+                }
+                .onFailure { error ->
+                    Log.e("LeagueViewModel", "Exception during request -> ${error.localizedMessage}")
+                    _leagues.postValue(emptyList())
+                }
         }
     }
 
@@ -146,11 +150,19 @@ class LeagueViewModel @Inject constructor(
     fun assignTeamToLeague(teamId: String, leagueId: String, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
+                val teamToNotify = _searchResults.value?.find { it.teamId == teamId }
+
                 val response = assignTeamToLeagueUseCase(teamId, leagueId)
 
                 if (response.isSuccessful) {
                     onSuccess()
                     loadLeagueTeams(leagueId)
+
+                    teamToNotify?.let {
+                        notifier.showTeamAddedNotification(it)
+                        Log.d("LeagueViewModel", "Уведомление о добавлении команды ${it.teamName} отправлено.")
+                    }
+
                 } else {
                     Log.e("LeagueViewModel", "Team assignment failed: ${response.code()}")
                 }

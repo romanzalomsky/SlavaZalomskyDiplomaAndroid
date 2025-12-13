@@ -19,6 +19,14 @@ import java.util.Locale
 class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewHolder>(
     MatchesDiffCallback()
 ) {
+    private var scheduledMatchIds: Set<String> = emptySet()
+
+    fun updateScheduledMatches(scheduledIds: Set<String>) {
+        if (scheduledMatchIds != scheduledIds) {
+            scheduledMatchIds = scheduledIds
+            notifyDataSetChanged()
+        }
+    }
 
     private val dateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale("ru"))
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale("ru"))
@@ -33,14 +41,12 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
         val awayTeamName: TextView = itemView.findViewById(R.id.awayTeamName)
         val awayTeamScore: TextView = itemView.findViewById(R.id.awayTeamScore)
 
-        fun bind(match: MatchResponseModel) {
-            val matchDateTime = match.matchDate?.let { dateString ->
-                try {
-                    LocalDateTime.parse(dateString)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
+        fun bind(match: MatchResponseModel, isScheduled: Boolean) {
+            val matchDateTimeString = match.matchDate
+            val matchDateTime = try {
+                if (!matchDateTimeString.isNullOrEmpty()) LocalDateTime.parse(matchDateTimeString) else null
+            } catch (e: Exception) {
+                null
             }
 
             if (matchDateTime != null) {
@@ -79,6 +85,26 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
     }
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val match = getItem(position)
+        val isScheduled = scheduledMatchIds.contains(match.matchId)
+        holder.bind(match, isScheduled)
+    }
+
+    class MatchesDiffCallback : DiffUtil.ItemCallback<MatchResponseModel>() {
+        override fun areItemsTheSame(
+            oldItem: MatchResponseModel,
+            newItem: MatchResponseModel
+        ): Boolean {
+            return oldItem.matchId == newItem.matchId
+        }
+
+        override fun areContentsTheSame(
+            oldItem: MatchResponseModel,
+            newItem: MatchResponseModel
+        ): Boolean {
+            return oldItem.matchDate == newItem.matchDate &&
+                    oldItem.homeTeam.teamName == newItem.homeTeam.teamName &&
+                    oldItem.awayTeam.teamName == newItem.awayTeam.teamName
+        }
     }
 }

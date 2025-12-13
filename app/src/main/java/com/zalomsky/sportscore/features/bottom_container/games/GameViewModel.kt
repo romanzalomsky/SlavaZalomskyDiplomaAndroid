@@ -3,10 +3,12 @@ package com.zalomsky.sportscore.features.bottom_container.games
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.responses.LeaguesUiState
+import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
 import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.schedule.GetFavoriteScheduleUseCase
 import com.zalomsky.sportscore.domain.usecase.schedule.GetScheduleUseCase
+import com.zalomsky.sportscore.notions.Notifier // Изменено на Notifier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,8 +19,11 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     private val getFavoriteScheduleUseCase: GetFavoriteScheduleUseCase,
     private val getScheduleUseCase: GetScheduleUseCase,
-    private val getLeaguesUseCase: LeagueUseCase
-): ViewModel(){
+    private val getLeaguesUseCase: LeagueUseCase,
+    // Удалена зависимость от старого NotificationScheduler, если была
+    // Notifier не нужен здесь, так как уведомления о командах вызываются из LeagueViewModel.
+    // Оставляем пустой конструктор для Hilt
+) : ViewModel() {
 
     private val _leagueScheduleState = MutableStateFlow<ScheduleUiState>(ScheduleUiState.Loading)
     val leagueScheduleState: StateFlow<ScheduleUiState> = _leagueScheduleState
@@ -29,27 +34,28 @@ class GameViewModel @Inject constructor(
     private val _leaguesState = MutableStateFlow<LeaguesUiState>(LeaguesUiState.Loading)
     val leaguesState: StateFlow<LeaguesUiState> = _leaguesState
 
+    // Убрали _scheduledNotifications, так как больше нет уведомлений о матчах
+
     init {
         loadLeagues()
     }
 
-    private fun loadLeagues() {
+    fun loadLeagues() {
         viewModelScope.launch {
             _leaguesState.value = LeaguesUiState.Loading
-            try {
-                val leagues = getLeaguesUseCase()
-
-                _leaguesState.value = LeaguesUiState.Success(leagues)
-                if (leagues.isNotEmpty()) {
-                    loadLeagueSchedule(leagues.first().id)
-                } else {
-                    _leagueScheduleState.value = ScheduleUiState.Error("Список лиг пуст.")
+            getLeaguesUseCase()
+                .onSuccess { leagues ->
+                    _leaguesState.value = LeaguesUiState.Success(leagues)
+                    if (leagues.isNotEmpty()) {
+                        loadLeagueSchedule(leagues.first().id)
+                    } else {
+                        _leagueScheduleState.value = ScheduleUiState.Error("Лиги не найдены.")
+                    }
                 }
-
-            } catch (error: Exception) {
-                _leaguesState.value = LeaguesUiState.Error(error.message ?: "Ошибка загрузки списка лиг")
-                _leagueScheduleState.value = ScheduleUiState.Error("Ошибка загрузки расписания: Нет лиг.")
-            }
+                .onFailure { error ->
+                    _leaguesState.value = LeaguesUiState.Error(error.message ?: "Unknown error")
+                    _leagueScheduleState.value = ScheduleUiState.Error("Ошибка загрузки расписания: ${error.message ?: "Unknown error"}")
+                }
         }
     }
 
@@ -79,4 +85,5 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    // Удален toggleMatchNotification и другие методы, связанные с уведомлениями о матчах
 }

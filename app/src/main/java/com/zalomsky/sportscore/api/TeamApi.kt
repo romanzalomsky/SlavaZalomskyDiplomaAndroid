@@ -1,5 +1,6 @@
 package com.zalomsky.sportscore.api
 
+import androidx.room.Delete
 import com.zalomsky.sportscore.domain.models.FavoriteTeamRequest
 import com.zalomsky.sportscore.domain.models.LeagueIdWrapper
 import com.zalomsky.sportscore.domain.models.TeamModel
@@ -7,6 +8,7 @@ import com.zalomsky.sportscore.domain.models.responses.BaseResponse
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -43,6 +45,9 @@ interface TeamApi {
 
     @POST("/auth/favorites/add")
     suspend fun addFavoriteTeam(@Body request: FavoriteTeamRequest): BaseResponse
+
+    @DELETE("/auth/favorites/delete/{teamId}")
+    suspend fun deleteFromFavorite(@Path("teamId") teamId: String): Response<BaseResponse>
 
     @GET("/auth/favorites")
     suspend fun getFavoriteTeams(): List<TeamResponseModel>

@@ -1,14 +1,22 @@
 package com.zalomsky.sportscore.features.bottom_container.favorite
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
@@ -27,32 +35,44 @@ class FavoriteFragment : Fragment() {
     private lateinit var matchesRecyclerView: RecyclerView
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var errorTextView: TextView
+    private lateinit var generatePdfFab: com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                generatePdfReport()
+            } else {
+                Toast.makeText(requireContext(), "Разрешение на сохранение PDF отклонено.", Toast.LENGTH_LONG).show()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
+        val view = inflater.inflate(R.layout.fragment_favorite, container, false)
+        matchesRecyclerView = view.findViewById(R.id.matchesRecyclerView)
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
+        errorTextView = view.findViewById(R.id.errorTextView)
+        generatePdfFab = view.findViewById(R.id.generatePdfFab)
+
+        matchesAdapter = MatchesAdapter()
+
+        matchesRecyclerView.layoutManager = LinearLayoutManager(context)
+        matchesRecyclerView.adapter = matchesAdapter
+
+        generatePdfFab.setOnClickListener {
+            checkStoragePermissionAndGeneratePdf()
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        matchesRecyclerView = view.findViewById(R.id.matchesRecyclerView)
-        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
-        errorTextView = view.findViewById(R.id.errorTextView)
-
-        matchesAdapter = MatchesAdapter()
-        matchesRecyclerView.adapter = matchesAdapter
-
-        observeScheduleState()
-
-        loadFavoriteSchedule()
-    }
-
-    fun loadFavoriteSchedule() {
         viewModel.loadFavoriteSchedule()
+        observeScheduleState()
     }
 
     private fun observeScheduleState() {
@@ -97,4 +117,46 @@ class FavoriteFragment : Fragment() {
             visibility = View.VISIBLE
         }
     }
+
+    private fun checkStoragePermissionAndGeneratePdf() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                generatePdfReport()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        } else {
+            generatePdfReport()
+        }
+    }
+
+    private fun generatePdfReport() {
+        val matches = (viewModel.favoriteScheduleState.value as? ScheduleUiState.Success)?.matches
+
+        if (matches.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Нет избранных матчей для отчета.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            PdfReportGenerator(requireContext()).createReport(matches)
+            Toast.makeText(
+                requireContext(),
+                "PDF отчет создан и сохранен в папке Downloads!",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: Exception) {
+            Log.e("FavoriteFragment", "Ошибка при создании PDF", e)
+
+            // Если сообщение об ошибке null, показываем общее сообщение.
+            val errorMessage = e.message ?: "Произошла внутренняя ошибка при сохранении файла. Проверьте Logcat."
+
+            Toast.makeText(requireContext(), "Ошибка при создании PDF: $errorMessage", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

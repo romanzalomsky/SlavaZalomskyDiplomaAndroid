@@ -5,6 +5,7 @@ import com.zalomsky.sportscore.domain.models.FavoriteTeamRequest
 import com.zalomsky.sportscore.domain.models.TeamModel
 import com.zalomsky.sportscore.domain.models.responses.BaseResponse
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
+import retrofit2.Response
 import javax.inject.Inject
 
 class TeamRepositoryImpl @Inject constructor(
@@ -23,6 +24,8 @@ class TeamRepositoryImpl @Inject constructor(
         val request = FavoriteTeamRequest(teamId = teamId)
         return teamApi.addFavoriteTeam(request)
     }
+
+    suspend fun deleteFromFavorite(teamId: String) = teamApi.deleteFromFavorite(teamId)
 
     suspend fun getFavoriteTeams(): List<TeamResponseModel> {
         return teamApi.getFavoriteTeams()

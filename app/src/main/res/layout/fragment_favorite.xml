@@ -34,6 +34,7 @@
         android:background="@drawable/spinner_outline_background"
         android:visibility="gone"
         tools:visibility="visible"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/matchesRecyclerView"
         android:layout_width="0dp"
@@ -70,4 +71,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/generatePdfFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/white"
+        android:contentDescription="Создать PDF отчет" />
 </androidx.constraintlayout.widget.ConstraintLayout>

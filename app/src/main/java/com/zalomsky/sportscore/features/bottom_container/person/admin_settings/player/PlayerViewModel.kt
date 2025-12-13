@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.responses.PlayerResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
+import com.zalomsky.sportscore.domain.usecase.player.InsertPlayerUseCase
 import com.zalomsky.sportscore.domain.usecase.player.PlayerUseCase
 import com.zalomsky.sportscore.domain.usecase.team.TeamUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val playerUseCase: PlayerUseCase,
+    private val insertPlayerUseCase: InsertPlayerUseCase,
     private val teamUseCase: TeamUseCase
 ): ViewModel() {
 

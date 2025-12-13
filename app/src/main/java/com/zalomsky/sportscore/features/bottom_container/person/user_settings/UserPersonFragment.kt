@@ -59,6 +59,9 @@ class UserPersonFragment : Fragment() {
             onItemClick = { team ->
                 val action = UserPersonFragmentDirections.actionUserPersonFragmentToTeamDetailFragment(team.teamId)
                 findNavController().navigate(action)
+            },
+            onDeleteClick = { teamId ->
+                viewModel.deleteTeamFromFavorites(teamId)
             }
         )
         setupSearchRecyclerView()
