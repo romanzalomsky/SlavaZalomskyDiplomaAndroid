@@ -3,6 +3,8 @@ package com.zalomsky.sportscore.features.bottom_container.games
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.content.Intent
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -40,6 +42,7 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
         val awayTeamIcon: ImageView = itemView.findViewById(R.id.awayTeamIcon)
         val awayTeamName: TextView = itemView.findViewById(R.id.awayTeamName)
         val awayTeamScore: TextView = itemView.findViewById(R.id.awayTeamScore)
+        val streamLinkTextView: TextView = itemView.findViewById(R.id.streamLinkTextView)
 
         fun bind(match: MatchResponseModel, isScheduled: Boolean) {
             val matchDateTimeString = match.matchDate
@@ -62,6 +65,15 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
 
             homeTeamScore.text = match.homeScore?.toString() ?: "-"
             awayTeamScore.text = match.awayScore?.toString() ?: "-"
+            if (match.streamUrl.isNullOrBlank()) {
+                streamLinkTextView.visibility = View.GONE
+            } else {
+                streamLinkTextView.visibility = View.VISIBLE
+                streamLinkTextView.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(match.streamUrl))
+                    itemView.context.startActivity(intent)
+                }
+            }
 
             loadImage(homeTeamIcon, match.homeTeam.teamIcon)
             loadImage(awayTeamIcon, match.awayTeam.teamIcon)

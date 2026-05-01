@@ -2,10 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="systemColor">#16AC00</color>
+    <color name="systemColor">#0D47FF</color>
     <color name="textColor">#363636</color>
-    <color name="iconColor">#0F23FF</color>
-    <color name="gradientStart">#4CAF50</color>
-    <color name="primaryBlue">#7B8FFF</color>
+    <color name="iconColor">#0D47FF</color>
+    <color name="gradientStart">#0D47FF</color>
+    <color name="primaryBlue">#4C7DFF</color>
     <color name="redColor">#FF0000</color>
 </resources>

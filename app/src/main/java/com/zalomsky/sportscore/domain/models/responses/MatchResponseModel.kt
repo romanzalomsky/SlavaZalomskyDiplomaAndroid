@@ -14,6 +14,7 @@ data class MatchResponseModel (
     @SerializedName("leagueId")val leagueId: String,
     @SerializedName("matchWeek")val matchWeek: Int,
     @SerializedName("matchDate")val matchDate: String? = null,
+    @SerializedName("streamUrl")val streamUrl: String? = null,
     @SerializedName("homeScore")val homeScore: Int? = null,
     @SerializedName("awayScore")val awayScore: Int? = null
 )

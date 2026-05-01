@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.sportscore.domain.models.User
+import com.zalomsky.sportscore.domain.models.RegisterRequest
 import com.zalomsky.sportscore.domain.usecase.RegistrationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,14 +16,14 @@ import javax.inject.Inject
 class RegistrationViewModel @Inject constructor(
     private val registrationUseCase: RegistrationUseCase
 ) : ViewModel() {
-    private val _user = MutableLiveData<User>()
-    val user: LiveData<User>
+    private val _user = MutableLiveData<RegisterRequest>()
+    val user: LiveData<RegisterRequest>
         get() = _user
 
-    fun createNewUser(user: User, onSuccess: () -> Unit, onError: () -> Unit) {
+    fun createNewUser(request: RegisterRequest, asAdmin: Boolean, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
-                registrationUseCase(user = user)
+                registrationUseCase(request = request, asAdmin = asAdmin)
                 onSuccess()
             } catch (e: Exception) {
                 Log.e("asdfghjk", "Exception during request -> ${e.localizedMessage}")

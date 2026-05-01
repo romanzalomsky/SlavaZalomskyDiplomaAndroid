@@ -10,5 +10,6 @@ data class LeagueModel(
     @SerializedName("id") val id: String,
     @SerializedName("leagueName") val leagueName: String,
     @SerializedName("leagueImage") val leagueImage: String,
-    @SerializedName("countryId") val countryId: String
+    @SerializedName("countryId") val countryId: String,
+    @SerializedName("sportType") val sportType: String = SportType.FOOTBALL.name
 )

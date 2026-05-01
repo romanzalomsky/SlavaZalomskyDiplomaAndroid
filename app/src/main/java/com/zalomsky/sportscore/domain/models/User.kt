@@ -11,6 +11,6 @@ data class User(
     @SerializedName("id") val id: String,
     @SerializedName("username") val username: String,
     @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String,
-    @SerializedName("role") val roleModel: RoleModel
+    @SerializedName("password") val password: String = "",
+    @SerializedName("role") val roleModel: RoleModel = RoleModel.USER
 )

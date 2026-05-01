@@ -29,6 +29,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 saveToken(loginUseCase(loginRequest = loginRequest).token)
+                fetchRole()
                 onSuccess()
             } catch (e: Exception) {
                 Log.e("poiuyt", e.localizedMessage)
@@ -61,5 +62,16 @@ class AuthViewModel @Inject constructor(
                 _userRole.value = null
             }
         }
+    }
+
+    fun logout() {
+        preferenceManager.clearPreferences()
+        _userRole.value = null
+    }
+
+    fun getSavedRole(): RoleModel? {
+        return runCatching {
+            preferenceManager.getRole()?.let { RoleModel.valueOf(it) }
+        }.getOrNull()
     }
 }

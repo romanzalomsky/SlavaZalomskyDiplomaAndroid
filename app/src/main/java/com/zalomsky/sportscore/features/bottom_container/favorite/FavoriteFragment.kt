@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
 import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
+import com.zalomsky.sportscore.domain.models.responses.LeaguesUiState
+import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import com.zalomsky.sportscore.features.bottom_container.games.GameViewModel
 import com.zalomsky.sportscore.features.bottom_container.games.MatchesAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +39,11 @@ class FavoriteFragment : Fragment() {
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var errorTextView: TextView
     private lateinit var generatePdfFab: com.google.android.material.floatingactionbutton.FloatingActionButton
+    private lateinit var sportSpinner: Spinner
+    private lateinit var leagueSpinner: Spinner
+    private var leagues: List<LeagueResponseModel> = emptyList()
+    private var filteredLeagues: List<LeagueResponseModel> = emptyList()
+    private var favoriteMatches: List<MatchResponseModel> = emptyList()
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -56,6 +64,8 @@ class FavoriteFragment : Fragment() {
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
         errorTextView = view.findViewById(R.id.errorTextView)
         generatePdfFab = view.findViewById(R.id.generatePdfFab)
+        sportSpinner = view.findViewById(R.id.favoriteSportSpinner)
+        leagueSpinner = view.findViewById(R.id.leagueSpinner)
 
         matchesAdapter = MatchesAdapter()
 
@@ -72,7 +82,62 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadFavoriteSchedule()
+        setupSportSpinner()
+        observeLeaguesState()
         observeScheduleState()
+    }
+
+    private fun setupSportSpinner() {
+        val sports = listOf("ALL", "FOOTBALL", "TENNIS", "HOCKEY")
+        val sportAdapter = android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sports)
+        sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sportSpinner.adapter = sportAdapter
+        sportSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                updateLeaguesFilter()
+                applyFilters()
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) = Unit
+        }
+    }
+
+    private fun observeLeaguesState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.leaguesState.collect { state ->
+                if (state is LeaguesUiState.Success) {
+                    leagues = state.leagues
+                    updateLeaguesFilter()
+                }
+            }
+        }
+    }
+
+    private fun updateLeaguesFilter() {
+        val selectedSport = sportSpinner.selectedItem?.toString() ?: "ALL"
+        filteredLeagues = if (selectedSport == "ALL") leagues else leagues.filter { it.sportType.equals(selectedSport, true) }
+        val leagueNames = mutableListOf("ALL").apply { addAll(filteredLeagues.map { it.leagueName }) }
+        val adapter = android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, leagueNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        leagueSpinner.adapter = adapter
+        leagueSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                applyFilters()
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) = Unit
+        }
+    }
+
+    private fun applyFilters() {
+        val selectedSport = sportSpinner.selectedItem?.toString() ?: "ALL"
+        val leaguePosition = leagueSpinner.selectedItemPosition
+        val leagueId = if (leaguePosition <= 0) "ALL" else filteredLeagues.getOrNull(leaguePosition - 1)?.id ?: "ALL"
+        val leagueMap = leagues.associateBy { it.id }
+        val filtered = favoriteMatches.filter { match ->
+            val sportOk = if (selectedSport == "ALL") true else leagueMap[match.leagueId]?.sportType.equals(selectedSport, true)
+            val leagueOk = leagueId == "ALL" || match.leagueId == leagueId
+            sportOk && leagueOk
+        }
+        renderMatches(filtered)
     }
 
     private fun observeScheduleState() {
@@ -94,6 +159,11 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun showData(matches: List<MatchResponseModel>) {
+        favoriteMatches = matches
+        renderMatches(matches)
+    }
+
+    private fun renderMatches(matches: List<MatchResponseModel>) {
         loadingProgressBar.visibility = View.GONE
         errorTextView.visibility = View.GONE
 

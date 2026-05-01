@@ -34,8 +34,10 @@ class GameFragment : Fragment() {
     private lateinit var errorTextView: TextView
     private lateinit var matchesAdapter: MatchesAdapter
     private lateinit var leagueSpinner: Spinner
+    private lateinit var sportSpinner: Spinner
 
     private var leagueList: List<LeagueResponseModel> = emptyList()
+    private var filteredLeagueList: List<LeagueResponseModel> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +49,7 @@ class GameFragment : Fragment() {
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
         errorTextView = view.findViewById(R.id.errorTextView)
         leagueSpinner = view.findViewById(R.id.leagueSpinner)
+        sportSpinner = view.findViewById(R.id.sportSpinner)
 
         matchesAdapter = MatchesAdapter()
         matchesRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -59,6 +62,20 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeLeagueState()
         observeScheduleState()
+        setupSportSpinner()
+    }
+
+    private fun setupSportSpinner() {
+        val sports = listOf("FOOTBALL", "TENNIS", "HOCKEY")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sports)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sportSpinner.adapter = adapter
+        sportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                setupLeagueSpinner(parent.getItemAtPosition(position).toString())
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
     }
 
     private fun observeLeagueState() {
@@ -69,7 +86,7 @@ class GameFragment : Fragment() {
                     }
                     is LeaguesUiState.Success -> {
                         leagueList = state.leagues
-                        setupLeagueSpinner()
+                        setupLeagueSpinner(sportSpinner.selectedItem?.toString() ?: "FOOTBALL")
                     }
                     is LeaguesUiState.Error -> {
                     }
@@ -77,18 +94,20 @@ class GameFragment : Fragment() {
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun setupLeagueSpinner() {
+    private fun setupLeagueSpinner(selectedSport: String) {
+        filteredLeagueList = leagueList.filter { it.sportType.equals(selectedSport, true) }
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            leagueList.map { it.leagueName }
+            filteredLeagueList.map { it.leagueName }
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         leagueSpinner.adapter = adapter
 
         leagueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedLeague = leagueList[position]
+                if (position >= filteredLeagueList.size) return
+                val selectedLeague = filteredLeagueList[position]
                 viewModel.loadLeagueSchedule(selectedLeague.id)
             }
 

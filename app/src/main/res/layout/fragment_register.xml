@@ -139,6 +139,38 @@
         app:layout_constraintStart_toStartOf="@+id/regPasswordLayout"
         app:layout_constraintTop_toBottomOf="@+id/regPasswordLayout" />
 
+    <CheckBox
+        android:id="@+id/registerAsAdminCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Зарегистрировать как администратора"
+        android:textColor="@color/textColor"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/buttonAuth"
+        app:layout_constraintTop_toBottomOf="@id/buttonAuth" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/adminKeyLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/systemColor"
+        app:hintTextColor="@color/systemColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerAsAdminCheckBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/adminKeyId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Admin key"
+            android:inputType="textPassword"
+            android:visibility="gone"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/authLink"
         android:layout_width="wrap_content"
@@ -150,6 +182,6 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAuth" />
+        app:layout_constraintTop_toBottomOf="@+id/adminKeyLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

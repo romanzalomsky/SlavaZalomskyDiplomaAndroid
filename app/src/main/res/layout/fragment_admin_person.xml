@@ -22,6 +22,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/logoutAdminButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выход"
+        android:textAllCaps="false"
+        android:backgroundTint="@android:color/holo_red_light"
+        app:layout_constraintTop_toTopOf="@id/titleAdminMenu"
+        app:layout_constraintBottom_toBottomOf="@id/titleAdminMenu"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
@@ -129,5 +140,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linkToTeamButton" />
 
+    <TextView
+        android:id="@+id/adminUsersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пользователи"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/linkToPlayerButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/adminUsersRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/adminUsersTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_admin_user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

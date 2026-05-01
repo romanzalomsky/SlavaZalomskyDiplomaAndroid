@@ -12,7 +12,8 @@ data class LeagueResponseModel(
     @SerializedName("leagueImage") val leagueImage: String,
     @SerializedName("leagueTeams") val leagueTeams: List<TeamResponseModel>,
     @SerializedName("countryId") val countryId: String,
-    @SerializedName("countryName") val countryName: String
+    @SerializedName("countryName") val countryName: String,
+    @SerializedName("sportType") val sportType: String = "FOOTBALL"
 )
 
 sealed class LeaguesUiState {

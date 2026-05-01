@@ -25,6 +25,7 @@ class PersonFragment : Fragment() {
 
     private val ACTION_TO_ADMIN = R.id.action_personFragment_to_adminPersonFragment
     private val ACTION_TO_USER = R.id.action_personFragment_to_userPersonFragment
+    private var hasNavigated = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,11 +44,12 @@ class PersonFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.userRole.collect { role ->
-
-                role?.let {
+                if (hasNavigated) return@collect
+                val effectiveRole = role ?: viewModel.getSavedRole()
+                effectiveRole?.let {
+                    hasNavigated = true
                     navigateToRoleScreen(it)
                 }
-
             }
         }
     }

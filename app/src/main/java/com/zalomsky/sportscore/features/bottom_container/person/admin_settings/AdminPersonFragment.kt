@@ -6,10 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
+import com.zalomsky.sportscore.data.UserRepositoryImpl
+import com.zalomsky.sportscore.features.auth.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.fragment.app.viewModels
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AdminPersonFragment : Fragment() {
+
+    @Inject
+    lateinit var userRepository: UserRepositoryImpl
+
+    private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var usersAdapter: AdminUsersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +47,14 @@ class AdminPersonFragment : Fragment() {
         val linkToLeague = view.findViewById<Button>(R.id.linkToLeagueButton)
         val linkToPlayer = view.findViewById<Button>(R.id.linkToPlayerButton)
         val linkToTeam = view.findViewById<Button>(R.id.linkToTeamButton)
+        val logoutButton = view.findViewById<Button>(R.id.logoutAdminButton)
+        val usersRecyclerView = view.findViewById<RecyclerView>(R.id.adminUsersRecyclerView)
+
+        usersAdapter = AdminUsersAdapter(emptyList()) { user ->
+            deleteUser(user.id)
+        }
+        usersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        usersRecyclerView.adapter = usersAdapter
 
         linkToCountry.setOnClickListener {
             it.findNavController().navigate(R.id.action_adminPersonFragment_to_countryFragment)
@@ -41,6 +70,50 @@ class AdminPersonFragment : Fragment() {
         }
         linkToTeam.setOnClickListener {
             it.findNavController().navigate(R.id.action_adminPersonFragment_to_teamFragment2)
+        }
+        logoutButton.setOnClickListener {
+            authViewModel.logout()
+            val options = navOptions { popUpTo(R.id.nav_graph) { inclusive = true } }
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.authFragment, null, options)
+        }
+
+        loadUsers()
+    }
+
+    private fun loadUsers() {
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching { userRepository.getAllUsers() }
+                .onSuccess { users ->
+                    withContext(Dispatchers.Main) {
+                        usersAdapter.submitList(users)
+                    }
+                }
+                .onFailure {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "Ошибка загрузки пользователей", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+    }
+
+    private fun deleteUser(userId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching { userRepository.deleteUser(userId) }
+                .onSuccess { response ->
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(requireContext(), "Пользователь удален", Toast.LENGTH_SHORT).show()
+                            loadUsers()
+                        } else {
+                            Toast.makeText(requireContext(), "Удаление не удалось", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .onFailure {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "Ошибка удаления пользователя", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
 }

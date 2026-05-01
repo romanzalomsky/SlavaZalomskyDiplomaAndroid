@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,8 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.zalomsky.sportscore.R
-import com.zalomsky.sportscore.domain.models.RoleModel
-import com.zalomsky.sportscore.domain.models.User
+import com.zalomsky.sportscore.domain.models.RegisterRequest
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +27,8 @@ class RegisterFragment : Fragment() {
     private lateinit var authPasswordId: TextInputEditText
     private lateinit var buttonAuth: Button
     private lateinit var authLink: TextView
+    private lateinit var registerAsAdminCheckBox: CheckBox
+    private lateinit var adminKeyId: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,13 @@ class RegisterFragment : Fragment() {
         authPasswordId = view.findViewById(R.id.authPasswordId)
         buttonAuth = view.findViewById(R.id.buttonAuth)
         authLink = view.findViewById(R.id.authLink)
+        registerAsAdminCheckBox = view.findViewById(R.id.registerAsAdminCheckBox)
+        adminKeyId = view.findViewById(R.id.adminKeyId)
+
+        registerAsAdminCheckBox.setOnCheckedChangeListener { _, checked ->
+            adminKeyId.visibility = if (checked) View.VISIBLE else View.GONE
+            if (!checked) adminKeyId.setText("")
+        }
 
         return view
     }
@@ -70,22 +79,29 @@ class RegisterFragment : Fragment() {
             return
         }
 
-        val user = User(
-            id = "",
+        val isAdminRegistration = registerAsAdminCheckBox.isChecked
+        val adminKey = adminKeyId.text?.toString()?.trim()?.takeIf { it.isNotEmpty() }
+        if (isAdminRegistration && adminKey.isNullOrBlank()) {
+            Toast.makeText(requireContext(), "Для админ-регистрации нужен admin key", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val request = RegisterRequest(
             username = name,
             email = email,
             password = password,
-            roleModel = RoleModel.USER
+            adminKey = adminKey
         )
 
         viewModel.createNewUser(
-            user,
+            request,
+            isAdminRegistration,
             onSuccess = {
                 findNavController().navigate(R.id.action_registerFragment_to_authFragment)
                 Toast.makeText(requireContext(), "Вы успешно зарегистрированы", Toast.LENGTH_SHORT).show()
             },
             onError = {
-                Toast.makeText(requireContext(), "Что с ебалом)))", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Ошибка регистрации. Проверьте данные.", Toast.LENGTH_SHORT).show()
             })
     }
 }

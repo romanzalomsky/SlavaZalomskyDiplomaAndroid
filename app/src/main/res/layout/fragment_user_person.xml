@@ -21,6 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/logoutUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выход"
+        android:textAllCaps="false"
+        android:backgroundTint="@android:color/holo_red_light"
+        app:layout_constraintTop_toTopOf="@id/titleTextView"
+        app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <EditText
         android:id="@+id/searchEditText"
         android:layout_width="0dp"

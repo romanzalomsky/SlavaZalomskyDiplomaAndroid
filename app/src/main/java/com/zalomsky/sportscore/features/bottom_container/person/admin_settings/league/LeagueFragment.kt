@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.models.LeagueModel
-import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.city.CityAdapter
+import com.zalomsky.sportscore.domain.models.SportType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +28,7 @@ class LeagueFragment : Fragment() {
     private lateinit var leagueAdapter: LeagueAdapter
 
     private var selectedCountryId: String? = null
+    private var selectedSportType: String = SportType.FOOTBALL.name
     private var countriesList: List<Country> = emptyList()
 
     override fun onCreateView(
@@ -47,7 +48,19 @@ class LeagueFragment : Fragment() {
         val leagueImageEt = view.findViewById<TextInputEditText>(R.id.leagueImageEditText)
 
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextViewLeague)
+        val sportTypeSelector = view.findViewById<AutoCompleteTextView>(R.id.sportTypeAutoCompleteTextView)
         val addButton = view.findViewById<Button>(R.id.addLeagueButton)
+        val sportAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            SportType.values().map { it.name }
+        )
+        sportTypeSelector.setAdapter(sportAdapter)
+        sportTypeSelector.setText(selectedSportType, false)
+        sportTypeSelector.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            selectedSportType = parent.getItemAtPosition(position).toString()
+        }
+
 
         leagueAdapter = LeagueAdapter(
             emptyList(),
@@ -107,13 +120,16 @@ class LeagueFragment : Fragment() {
                     id = "",
                     leagueName = name,
                     leagueImage = image,
-                    countryId = countryId
+                    countryId = countryId,
+                    sportType = selectedSportType
                 )
 
                 viewModel.addLeague(newLeague) {
                     leagueNameEt.setText("")
                     leagueImageEt.setText("")
                     countrySelector.setText("")
+                    sportTypeSelector.setText(SportType.FOOTBALL.name, false)
+                    selectedSportType = SportType.FOOTBALL.name
                     selectedCountryId = null
                     Toast.makeText(context, "Лига '${name}' успешно добавлена!", Toast.LENGTH_SHORT).show()
                 }

@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zalomsky.sportscore.R
+import com.zalomsky.sportscore.features.auth.AuthViewModel
 import com.zalomsky.sportscore.features.bottom_container.favorite.FavoriteSearchTeamAdapter
 import com.zalomsky.sportscore.features.bottom_container.favorite.FavoriteTeamAdapter
 import com.zalomsky.sportscore.features.bottom_container.favorite.FavoriteViewModel
@@ -26,11 +29,13 @@ import kotlin.getValue
 class UserPersonFragment : Fragment() {
 
     private val viewModel: FavoriteViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     private lateinit var searchEditText: android.widget.EditText
     private lateinit var searchResultsRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var favoriteResultsRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var favoriteListTitleTextView: android.widget.TextView
+    private lateinit var logoutButton: android.widget.Button
 
     private lateinit var searchAdapter: FavoriteSearchTeamAdapter
     private lateinit var favoriteAdapter: FavoriteTeamAdapter
@@ -47,6 +52,7 @@ class UserPersonFragment : Fragment() {
         searchResultsRecyclerView = view.findViewById(R.id.teamSearchResultsRecyclerView)
         favoriteResultsRecyclerView = view.findViewById(R.id.favoriteTeamsRecyclerView)
         favoriteListTitleTextView = view.findViewById(R.id.favoriteListTitleTextView)
+        logoutButton = view.findViewById(R.id.logoutUserButton)
 
         return view
     }
@@ -73,6 +79,11 @@ class UserPersonFragment : Fragment() {
 
         setupSearchListener()
         observeViewModel()
+        logoutButton.setOnClickListener {
+            authViewModel.logout()
+            val options = navOptions { popUpTo(R.id.nav_graph) { inclusive = true } }
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.authFragment, null, options)
+        }
 
         viewModel.loadFavoriteTeams()
     }
