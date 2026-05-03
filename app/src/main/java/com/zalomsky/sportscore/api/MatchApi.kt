@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface MatchApi {
 
-    @GET("/auth/league/{leagueId}/schedule")
+    @GET("auth/league/{leagueId}/schedule")
     suspend fun getScheduleByLeagueId(
         @Path("leagueId") leagueId: String
     ): List<MatchResponseModel>

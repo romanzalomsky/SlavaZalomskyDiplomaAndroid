@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.data.UserRepositoryImpl
 import com.zalomsky.sportscore.features.auth.AuthViewModel
@@ -42,19 +43,38 @@ class AdminPersonFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val linkToCountry = view.findViewById<Button>(R.id.linkToCountryButton)
-        val linkToCity = view.findViewById<Button>(R.id.linkToCityButton)
-        val linkToLeague = view.findViewById<Button>(R.id.linkToLeagueButton)
-        val linkToPlayer = view.findViewById<Button>(R.id.linkToPlayerButton)
-        val linkToTeam = view.findViewById<Button>(R.id.linkToTeamButton)
-        val logoutButton = view.findViewById<Button>(R.id.logoutAdminButton)
+        val settingsContent = view.findViewById<View>(R.id.settingsContent)
         val usersRecyclerView = view.findViewById<RecyclerView>(R.id.adminUsersRecyclerView)
+        val toggleGroup = view.findViewById<MaterialButtonToggleGroup>(R.id.toggleGroup)
+
+        val linkToCountry = view.findViewById<View>(R.id.linkToCountryButton)
+        val linkToCity = view.findViewById<View>(R.id.linkToCityButton)
+        val linkToLeague = view.findViewById<View>(R.id.linkToLeagueButton)
+        val linkToPlayer = view.findViewById<View>(R.id.linkToPlayerButton)
+        val linkToTeam = view.findViewById<View>(R.id.linkToTeamButton)
+        val logoutButton = view.findViewById<View>(R.id.logoutAdminButton)
 
         usersAdapter = AdminUsersAdapter(emptyList()) { user ->
-            deleteUser(user.id)
+            user.id?.let { deleteUser(it) }
         }
         usersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         usersRecyclerView.adapter = usersAdapter
+
+        toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btnSettingsTab -> {
+                        settingsContent.isVisible = true
+                        usersRecyclerView.isVisible = false
+                    }
+                    R.id.btnUsersTab -> {
+                        settingsContent.isVisible = false
+                        usersRecyclerView.isVisible = true
+                        loadUsers()
+                    }
+                }
+            }
+        }
 
         linkToCountry.setOnClickListener {
             it.findNavController().navigate(R.id.action_adminPersonFragment_to_countryFragment)
@@ -76,8 +96,6 @@ class AdminPersonFragment : Fragment() {
             val options = navOptions { popUpTo(R.id.nav_graph) { inclusive = true } }
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(R.id.authFragment, null, options)
         }
-
-        loadUsers()
     }
 
     private fun loadUsers() {

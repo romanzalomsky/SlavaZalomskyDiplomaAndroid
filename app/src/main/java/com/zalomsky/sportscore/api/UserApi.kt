@@ -14,7 +14,7 @@ import retrofit2.http.Path
 
 interface UserApi {
 
-    @POST("/auth/login")
+    @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("auth/refresh")
@@ -22,18 +22,15 @@ interface UserApi {
         @Header("Authorization") token: String,
     ): Response<LoginResponse>
 
-    @GET("/auth/get_user_info")
-    suspend fun getUserInfo(): User? //todo: fix request
-
-    @POST("/registration")
+    @POST("registration")
     suspend fun registration(@Body request: RegisterRequest): Response<User>
 
-    @POST("/registration/admin")
+    @POST("registration/admin")
     suspend fun adminRegistration(@Body request: RegisterRequest): Response<User>
 
-    @GET("/auth/admin/users")
+    @GET("auth/admin/users")
     suspend fun getAllUsers(): List<User>
 
-    @DELETE("/auth/admin/users/{userId}")
+    @DELETE("auth/admin/users/{userId}")
     suspend fun deleteUser(@Path("userId") userId: String): Response<com.zalomsky.sportscore.domain.models.responses.BaseResponse>
 }

@@ -11,21 +11,21 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface LeagueApi {
-    @GET("/auth/leagues")
+    @GET("auth/leagues")
     suspend fun getLeagues(): List<LeagueResponseModel>
 
-    @POST("/auth/leagues/add")
+    @POST("auth/leagues/add")
     suspend fun insertLeague(@Body league: LeagueModel): Response<LeagueResponseModel>
 
-    @GET("/auth/leagues/{leagueId}")
+    @GET("auth/leagues/{leagueId}")
     suspend fun getLeagueById(@Path("leagueId") leagueId: String): LeagueResponseModel
 
-    @PUT("/auth/leagues/{leagueId}")
+    @PUT("auth/leagues/{leagueId}")
     suspend fun updateLeague(
         @Path("leagueId") leagueId: String,
         @Body league: LeagueModel
     ): Response<LeagueResponseModel>
 
-    @GET("/auth/leagues/{leagueId}/teams")
+    @GET("auth/leagues/{leagueId}/teams")
     suspend fun getTeamsByLeagueId(@Path("leagueId") leagueId: String): List<TeamResponseModel>
 }

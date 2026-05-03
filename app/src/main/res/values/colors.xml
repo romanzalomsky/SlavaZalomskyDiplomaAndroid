@@ -8,4 +8,14 @@
     <color name="gradientStart">#0D47FF</color>
     <color name="primaryBlue">#4C7DFF</color>
     <color name="redColor">#FF0000</color>
+
+    <!-- Liquid Glass UI -->
+    <color name="nav_glass_bg">#E6FFFFFF</color> <!-- 90% White Glass -->
+    <color name="nav_glass_stroke">#1A000000</color>
+    <color name="nav_liquid_bubble">#1A0D47FF</color> <!-- 10% Blue Liquid -->
+    <color name="nav_item_active">#FFFFFF</color>
+    <color name="nav_item_inactive">#B3FFFFFF</color>
+
+    <color name="nav_bg_blue">#0D47FF</color>
+    <color name="nav_indicator_color">#0D47FF</color>
 </resources>

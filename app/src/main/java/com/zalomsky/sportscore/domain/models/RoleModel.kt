@@ -1,5 +1,10 @@
 package com.zalomsky.sportscore.domain.models
 
+import com.google.gson.annotations.SerializedName
+
 enum class RoleModel {
-    ADMIN, USER
+    @SerializedName("ADMIN")
+    ADMIN,
+    @SerializedName("USER")
+    USER
 }

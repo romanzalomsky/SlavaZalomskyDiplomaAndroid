@@ -12,12 +12,12 @@ import retrofit2.http.Path
 
 interface CityApi {
 
-    @GET("/auth/cities")
+    @GET("auth/cities")
     suspend fun getCities(): List<CityResponseModel>
 
-    @POST("/auth/cities/add")
+    @POST("auth/cities/add")
     suspend fun insertCity(@Body city: CityModel): Response<CityResponseModel>
 
-    @DELETE("/auth/cities/{cityId}")
+    @DELETE("auth/cities/{cityId}")
     suspend fun deleteCity(@Path("cityId") cityId: String): Response<BaseResponse>
 }

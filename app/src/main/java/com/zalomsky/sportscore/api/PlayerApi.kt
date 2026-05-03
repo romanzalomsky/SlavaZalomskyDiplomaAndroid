@@ -9,9 +9,9 @@ import retrofit2.http.POST
 
 interface PlayerApi {
 
-    @GET("/auth/players")
+    @GET("auth/players")
     suspend fun getPlayers(): List<PlayerResponseModel>
 
-    @POST("/auth/players/add")
+    @POST("auth/players/add")
     suspend fun insertPlayer(@Body player: PlayerModel): Response<PlayerResponseModel>
 }

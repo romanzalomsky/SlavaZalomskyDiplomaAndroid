@@ -16,11 +16,13 @@ class PreferenceManager @Inject constructor(
     }
 
     fun saveToken(token: String) {
-        sharedPreferences.edit().putString("token", token).apply()
+        // Очищаем токен от кавычек и пробелов, которые могли прийти из JSON
+        val cleanToken = token.trim().removeSurrounding("\"")
+        sharedPreferences.edit().putString(KEY_TOKEN, cleanToken).apply()
     }
 
     fun getToken(): String? {
-        return sharedPreferences.getString("token", null)
+        return sharedPreferences.getString(KEY_TOKEN, null)
     }
 
     fun saveRole(roleName: String) {

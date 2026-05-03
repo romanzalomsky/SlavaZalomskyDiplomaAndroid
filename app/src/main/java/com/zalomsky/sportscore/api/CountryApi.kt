@@ -11,12 +11,12 @@ import retrofit2.http.Path
 
 interface CountryApi {
 
-    @GET("/auth/countries")
+    @GET("auth/countries")
     suspend fun getCountries(): List<Country>
 
-    @POST("/auth/countries/add")
+    @POST("auth/countries/add")
     suspend fun insertCountry(@Body country: Country): Response<Country>
 
-    @DELETE("/auth/countries/{countryId}")
+    @DELETE("auth/countries/{countryId}")
     suspend fun deleteCountry(@Path("countryId") countryId: String): Response<BaseResponse>
 }

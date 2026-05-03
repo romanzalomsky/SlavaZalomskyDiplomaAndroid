@@ -11,8 +11,6 @@ class UserRepositoryImpl @Inject constructor(
 ) {
     suspend fun getLogin(loginRequest: LoginRequest) = userApi.login(loginRequest = loginRequest)
 
-    suspend fun getUser() = userApi.getUserInfo()
-
     suspend fun getRegistration(request: RegisterRequest, asAdmin: Boolean) =
         if (asAdmin) userApi.adminRegistration(request = request) else userApi.registration(request = request)
 
