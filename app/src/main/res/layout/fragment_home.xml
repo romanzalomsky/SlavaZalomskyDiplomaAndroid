@@ -43,10 +43,10 @@
         <!-- 2. The Liquid Bubble (Middle Z) -->
         <View
             android:id="@+id/nav_bubble_indicator"
-            android:layout_width="70dp"
-            android:layout_height="44dp"
+            android:layout_width="52dp"
+            android:layout_height="40dp"
             android:layout_gravity="bottom|start"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="14dp"
             android:background="@drawable/bottom_nav_indicator_bg"
             android:elevation="3dp"
             android:visibility="invisible" />

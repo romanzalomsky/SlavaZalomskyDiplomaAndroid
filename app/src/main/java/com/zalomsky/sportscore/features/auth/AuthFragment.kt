@@ -47,6 +47,11 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        view.findViewById<View>(R.id.btnHeaderRegister).setOnClickListener {
+            findNavController().navigate(R.id.action_authFragment_to_registerFragment)
+        }
+
         regLink.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_authFragment_to_registerFragment)
         }

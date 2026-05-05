@@ -24,7 +24,7 @@ interface TeamApi {
     suspend fun insertTeam(@Body team: TeamModel): Response<TeamResponseModel>
 
     @GET("auth/teams/{teamId}")
-    suspend fun getTeamById(@Query("teamId") teamId: String): TeamResponseModel?
+    suspend fun getTeamById(@Path("teamId") teamId: String): TeamResponseModel?
 
     @GET("auth/teams/search")
     suspend fun searchTeams(

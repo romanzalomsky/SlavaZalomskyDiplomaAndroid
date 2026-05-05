@@ -11,6 +11,10 @@
     <string name="authId">У меня есть аккаунт</string>
     <string name="bottom_nav_gameId">Матчи</string>
     <string name="bottom_nav_favoriteId">Избранное</string>
+    <string name="bottom_nav_leaguesId">Лиги</string>
     <string name="bottom_nav_personId">Кабинет</string>
+    <string name="bottom_nav_adminId">Админка</string>
+    <string name="team_count_format">%1$d команд</string>
+    <string name="details_btn">Подробнее</string>
 
 </resources>

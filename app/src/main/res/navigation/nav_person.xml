@@ -71,7 +71,8 @@
     <fragment
         android:id="@+id/leagueDetailsFragment"
         android:name="com.zalomsky.sportscore.features.bottom_container.person.admin_settings.league.LeagueDetailFragment"
-        android:label="LeagueDetailsFragment" >
+        android:label="LeagueDetailsFragment"
+        tools:layout="@layout/fragment_league_detail" >
         <argument
             android:name="leagueId"
             app:argType="string" />

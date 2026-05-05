@@ -16,8 +16,15 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zalomsky.sportscore.R
 
+import androidx.fragment.app.viewModels
+import com.zalomsky.sportscore.features.auth.AuthViewModel
+import com.zalomsky.sportscore.domain.models.RoleModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
+    private val authViewModel: AuthViewModel by viewModels()
     private lateinit var navController: NavController
     private var currentNavBubblePos = 0f
 
@@ -45,7 +52,7 @@ class HomeFragment : Fragment() {
             
             // 2. Настраиваем визуальный стиль программно для 100% контроля
             applyCustomNavigationStyle(bottomNavigationView)
-            
+
             bottomNavigationView.post {
                 syncBubblePosition(bottomNavigationView, bubbleIndicator, false)
             }

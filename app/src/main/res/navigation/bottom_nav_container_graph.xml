@@ -6,6 +6,8 @@
 
     <include app:graph="@navigation/nav_favorite" />
 
+    <include app:graph="@navigation/nav_leagues" />
+
     <include app:graph="@navigation/nav_person" />
 
 </navigation>

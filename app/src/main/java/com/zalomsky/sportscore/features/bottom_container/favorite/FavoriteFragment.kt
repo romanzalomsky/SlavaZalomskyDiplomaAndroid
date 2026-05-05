@@ -16,7 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.zalomsky.sportscore.features.auth.AuthViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zalomsky.sportscore.R
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 class FavoriteFragment : Fragment() {
 
     private val viewModel: GameViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
     private lateinit var matchesAdapter: MatchesAdapter
 
     private lateinit var matchesRecyclerView: RecyclerView
@@ -72,11 +75,28 @@ class FavoriteFragment : Fragment() {
         matchesRecyclerView.layoutManager = LinearLayoutManager(context)
         matchesRecyclerView.adapter = matchesAdapter
 
+        view.findViewById<android.widget.EditText>(R.id.teamSearchEditText).addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterByTeamName(s.toString())
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
         generatePdfFab.setOnClickListener {
             checkStoragePermissionAndGeneratePdf()
         }
 
+        view.findViewById<View>(R.id.btnLogout).setOnClickListener {
+            authViewModel.logout()
+            navigateToAuth()
+        }
+
         return view
+    }
+
+    private fun navigateToAuth() {
+        findNavController().navigate(R.id.authFragment)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -137,6 +157,11 @@ class FavoriteFragment : Fragment() {
             val leagueOk = leagueId == "ALL" || match.leagueId == leagueId
             sportOk && leagueOk
         }
+        renderMatches(filtered)
+    }
+
+    private fun filterByTeamName(query: String) {
+        val filtered = favoriteMatches.filter { it.homeTeam.teamName.contains(query, true) || it.awayTeam.teamName.contains(query, true) }
         renderMatches(filtered)
     }
 

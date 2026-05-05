@@ -28,6 +28,7 @@ class RegisterFragment : Fragment() {
     private lateinit var buttonAuth: Button
     private lateinit var authLink: TextView
     private lateinit var registerAsAdminCheckBox: CheckBox
+    private lateinit var adminKeyLayout: View
     private lateinit var adminKeyId: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +48,11 @@ class RegisterFragment : Fragment() {
         buttonAuth = view.findViewById(R.id.buttonAuth)
         authLink = view.findViewById(R.id.authLink)
         registerAsAdminCheckBox = view.findViewById(R.id.registerAsAdminCheckBox)
+        adminKeyLayout = view.findViewById(R.id.adminKeyLayout)
         adminKeyId = view.findViewById(R.id.adminKeyId)
 
         registerAsAdminCheckBox.setOnCheckedChangeListener { _, checked ->
-            adminKeyId.visibility = if (checked) View.VISIBLE else View.GONE
+            adminKeyLayout.visibility = if (checked) View.VISIBLE else View.GONE
             if (!checked) adminKeyId.setText("")
         }
 
@@ -59,6 +61,10 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<View>(R.id.btnHeaderLogin).setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_authFragment)
+        }
 
         authLink.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_registerFragment_to_authFragment)

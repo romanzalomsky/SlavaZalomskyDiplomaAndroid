@@ -17,9 +17,9 @@ class LeagueAdapter(
 ) : RecyclerView.Adapter<LeagueAdapter.LeagueViewHolder>() {
 
     class LeagueViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val leagueImageView: ImageView = view.findViewById(R.id.leagueImageView)
-        val leagueNameText: TextView = view.findViewById(R.id.leagueNameText)
-        val countryTextView: TextView = view.findViewById(R.id.leagueCountryTextView)
+        val leagueImageView: ImageView = view.findViewById(R.id.leagueIcon)
+        val leagueNameText: TextView = view.findViewById(R.id.leagueName)
+        val countryTextView: TextView = view.findViewById(R.id.countryName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeagueViewHolder {

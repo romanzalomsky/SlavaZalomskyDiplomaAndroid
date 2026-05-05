@@ -35,6 +35,8 @@ class GameFragment : Fragment() {
     private lateinit var matchesAdapter: MatchesAdapter
     private lateinit var leagueSpinner: Spinner
     private lateinit var sportSpinner: Spinner
+    private lateinit var matchCountText: TextView
+    private lateinit var selectedLeagueText: TextView
 
     private var leagueList: List<LeagueResponseModel> = emptyList()
     private var filteredLeagueList: List<LeagueResponseModel> = emptyList()
@@ -50,6 +52,8 @@ class GameFragment : Fragment() {
         errorTextView = view.findViewById(R.id.errorTextView)
         leagueSpinner = view.findViewById(R.id.leagueSpinner)
         sportSpinner = view.findViewById(R.id.sportSpinner)
+        matchCountText = view.findViewById(R.id.matchCountText)
+        selectedLeagueText = view.findViewById(R.id.selectedLeagueText)
 
         matchesAdapter = MatchesAdapter()
         matchesRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -108,6 +112,7 @@ class GameFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position >= filteredLeagueList.size) return
                 val selectedLeague = filteredLeagueList[position]
+                selectedLeagueText.text = selectedLeague.leagueName
                 viewModel.loadLeagueSchedule(selectedLeague.id)
             }
 
@@ -133,9 +138,11 @@ class GameFragment : Fragment() {
                             errorTextView.text = "Матчи не найдены."
                             errorTextView.visibility = View.VISIBLE
                             matchesRecyclerView.visibility = View.GONE
+                            matchCountText.text = "0"
                         } else {
                             matchesRecyclerView.visibility = View.VISIBLE
                             matchesAdapter.submitList(state.matches)
+                            matchCountText.text = state.matches.size.toString()
                         }
                     }
                     is ScheduleUiState.Error -> {

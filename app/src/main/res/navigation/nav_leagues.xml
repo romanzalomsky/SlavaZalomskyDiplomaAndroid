@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_leagues"
+    app:startDestination="@id/leaguesListFragment">
+
+    <fragment
+        android:id="@+id/leaguesListFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.leagues.LeaguesListFragment"
+        android:label="Лиги"
+        tools:layout="@layout/fragment_leagues_list">
+        <action
+            android:id="@+id/action_leaguesListFragment_to_leagueDetailFragment"
+            app:destination="@id/leagueDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/leagueDetailFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.leagues.LeagueDetailFragment"
+        android:label="Детали лиги"
+        tools:layout="@layout/fragment_league_view">
+        <argument
+            android:name="leagueId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_leagueDetailFragment_to_teamDetailFragment"
+            app:destination="@id/teamDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/teamDetailFragment"
+        android:name="com.zalomsky.sportscore.features.bottom_container.leagues.TeamDetailFragment"
+        android:label="Инфо о команде"
+        tools:layout="@layout/fragment_team_view">
+        <argument
+            android:name="teamId"
+            app:argType="string" />
+    </fragment>
+</navigation>
