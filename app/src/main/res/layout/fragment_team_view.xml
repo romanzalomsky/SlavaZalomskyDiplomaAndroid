@@ -36,56 +36,73 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@tools:sample/avatars" />
 
-                    <TextView
-                        android:id="@+id/teamDetailHeaderTitle"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/headerTextContainer"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Информация о команде"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/headerActionsContainer"
                         app:layout_constraintStart_toEndOf="@id/teamDetailIcon"
-                        app:layout_constraintTop_toTopOf="@id/teamDetailIcon" />
+                        app:layout_constraintTop_toTopOf="@id/teamDetailIcon">
 
-                    <TextView
-                        android:id="@+id/teamDetailName"
+                        <TextView
+                            android:id="@+id/teamDetailHeaderTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Информация о команде"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/teamDetailName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="#9E9E9E"
+                            android:textSize="14sp"
+                            tools:text="Manchester United" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/headerActionsContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#9E9E9E"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="@id/teamDetailHeaderTitle"
-                        app:layout_constraintTop_toBottomOf="@id/teamDetailHeaderTitle"
-                        tools:text="Manchester United" />
-
-                    <TextView
-                        android:id="@+id/sportBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg_light_green"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="FOOTBALL"
-                        android:textColor="#4CAF50"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@id/btnDownloadPdf"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginEnd="8dp"/>
-
-                    <Button
-                        android:id="@+id/btnDownloadPdf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:backgroundTint="@color/systemColor"
-                        android:minHeight="0dp"
-                        android:paddingHorizontal="12dp"
-                        android:text="Скачать PDF"
-                        android:textAllCaps="false"
-                        android:textSize="10sp"
-                        app:cornerRadius="8dp"
+                        android:gravity="end"
+                        android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/sportBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/badge_bg_light_green"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="4dp"
+                            android:text="FOOTBALL"
+                            android:textColor="#4CAF50"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnDownloadPdf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/systemColor"
+                            android:minHeight="0dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="Скачать PDF"
+                            android:textAllCaps="false"
+                            android:textSize="9sp"
+                            app:cornerRadius="8dp" />
+                    </LinearLayout>
 
                     <GridLayout
                         android:layout_width="match_parent"

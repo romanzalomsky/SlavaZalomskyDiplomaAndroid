@@ -13,36 +13,24 @@
         android:id="@+id/titleAdminMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🌍 Настройка стран"
-        android:textColor="@color/primaryBlue"
-        android:textSize="24sp"
+        android:text="Настройка стран"
+        android:textColor="@color/systemColor"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:paddingBottom="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/titleSeparator"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/systemColor"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleAdminMenu"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/labelAddCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="📝 Добавить новую страну"
-        android:textColor="@color/primaryBlue"
+        android:text="Добавить новую страну"
+        android:textColor="@color/systemColor"
         android:textSize="18sp"
-        android:textStyle="italic"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSeparator" />
+        app:layout_constraintTop_toBottomOf="@+id/titleAdminMenu" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countryNameInputLayout"
@@ -65,7 +53,7 @@
             android:id="@+id/countryNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название страны (например, Россия)"
+            android:hint="Название страны"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,8 +102,8 @@
         android:id="@+id/labelAddedCountries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="✅ Внесенные страны"
-        android:textColor="@color/primaryBlue"
+        android:text="Внесенные страны"
+        android:textColor="@color/systemColor"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_marginTop="32dp"

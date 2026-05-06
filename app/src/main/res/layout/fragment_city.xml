@@ -13,36 +13,24 @@
         android:id="@+id/titleCityMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🏙️ Настройка городов"
-        android:textColor="@color/primaryBlue"
-        android:textSize="24sp"
+        android:text="Настройка городов"
+        android:textColor="@color/systemColor"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:paddingBottom="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/titleSeparator"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/systemColor"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCityMenu"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/labelAddCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="➕ Добавить новый город"
-        android:textColor="@color/primaryBlue"
+        android:text="Добавить новый город"
+        android:textColor="@color/systemColor"
         android:textSize="18sp"
-        android:textStyle="italic"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSeparator" />
+        app:layout_constraintTop_toBottomOf="@+id/titleCityMenu" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cityNameInputLayout"
@@ -65,7 +53,7 @@
             android:id="@+id/cityNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название города (например, Москва)"
+            android:hint="Название города"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,8 +103,8 @@
         android:id="@+id/labelAddedCities"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="✅ Внесенные города"
-        android:textColor="@color/primaryBlue"
+        android:text="Внесенные города"
+        android:textColor="@color/systemColor"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_marginTop="32dp"

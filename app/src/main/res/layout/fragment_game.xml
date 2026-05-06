@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Предстоящие Матчи"
                 android:textColor="@color/systemColor"
-                android:textSize="20sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <!-- Subtitle with Blue Dot -->

@@ -13,10 +13,9 @@
         android:layout_height="wrap_content"
         android:text="Настройка лиг"
         android:textColor="@color/systemColor"
-        android:textSize="20sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="Добавить новую лигу"
         android:textColor="@color/systemColor"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleLeagueMenu" />
@@ -44,7 +43,7 @@
             android:id="@+id/leagueNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название лиги (например, АПЛ)"
+            android:hint="Название лиги"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +116,7 @@
         android:text="Внесенные лиги"
         android:textColor="@color/systemColor"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addLeagueButton" />
