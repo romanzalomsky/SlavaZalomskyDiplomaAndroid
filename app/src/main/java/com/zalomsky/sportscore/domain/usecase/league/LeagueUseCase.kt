@@ -7,7 +7,7 @@ import javax.inject.Inject
 class LeagueUseCase @Inject constructor(
     private val leagueRepositoryImpl: LeagueRepositoryImpl
 ) {
-    suspend operator fun invoke(): Result<List<LeagueResponseModel>> = runCatching {
-        leagueRepositoryImpl.getLeagues()
+    suspend operator fun invoke(sportType: String? = null): Result<List<LeagueResponseModel>> = runCatching {
+        leagueRepositoryImpl.getLeagues(sportType)
     }
 }

@@ -11,6 +11,11 @@ interface MatchApi {
         @Path("leagueId") leagueId: String
     ): List<MatchResponseModel>
 
+    @GET("auth/league/{leagueId}/tennis-schedule")
+    suspend fun getTennisScheduleByLeagueId(
+        @Path("leagueId") leagueId: String
+    ): List<MatchResponseModel>
+
     @GET("auth/favorites/schedule")
     suspend fun getFavoriteSchedule(): List<MatchResponseModel>
 }

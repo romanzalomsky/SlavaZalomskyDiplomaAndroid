@@ -12,7 +12,7 @@ import retrofit2.http.Path
 
 interface LeagueApi {
     @GET("auth/leagues")
-    suspend fun getLeagues(): List<LeagueResponseModel>
+    suspend fun getLeagues(@retrofit2.http.Query("sportType") sportType: String? = null): List<LeagueResponseModel>
 
     @POST("auth/leagues/add")
     suspend fun insertLeague(@Body league: LeagueModel): Response<LeagueResponseModel>

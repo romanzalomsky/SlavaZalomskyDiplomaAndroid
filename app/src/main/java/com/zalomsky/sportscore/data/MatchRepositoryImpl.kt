@@ -17,6 +17,15 @@ class MatchRepositoryImpl @Inject constructor(
         }
     }
 
+    suspend fun getTennisSchedule(leagueId: String): Result<List<MatchResponseModel>> {
+        return try {
+            val result = matchApi.getTennisScheduleByLeagueId(leagueId)
+            Result.success(result)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun getFavoriteSchedule(): Result<List<MatchResponseModel>> {
         return try {
             val result = matchApi.getFavoriteSchedule()

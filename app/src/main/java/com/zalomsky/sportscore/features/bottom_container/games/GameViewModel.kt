@@ -2,6 +2,7 @@ package com.zalomsky.sportscore.features.bottom_container.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zalomsky.sportscore.domain.models.SportType
 import com.zalomsky.sportscore.domain.models.responses.LeaguesUiState
 import com.zalomsky.sportscore.domain.models.responses.MatchResponseModel
 import com.zalomsky.sportscore.domain.models.responses.ScheduleUiState
@@ -20,9 +21,7 @@ class GameViewModel @Inject constructor(
     private val getFavoriteScheduleUseCase: GetFavoriteScheduleUseCase,
     private val getScheduleUseCase: GetScheduleUseCase,
     private val getLeaguesUseCase: LeagueUseCase,
-    // Удалена зависимость от старого NotificationScheduler, если была
-    // Notifier не нужен здесь, так как уведомления о командах вызываются из LeagueViewModel.
-    // Оставляем пустой конструктор для Hilt
+    private val repository: com.zalomsky.sportscore.data.MatchRepositoryImpl
 ) : ViewModel() {
 
     private val _leagueScheduleState = MutableStateFlow<ScheduleUiState>(ScheduleUiState.Loading)
@@ -34,20 +33,26 @@ class GameViewModel @Inject constructor(
     private val _leaguesState = MutableStateFlow<LeaguesUiState>(LeaguesUiState.Loading)
     val leaguesState: StateFlow<LeaguesUiState> = _leaguesState
 
-    // Убрали _scheduledNotifications, так как больше нет уведомлений о матчах
+    private val _currentSport = MutableStateFlow(SportType.FOOTBALL)
+    val currentSport: StateFlow<SportType> = _currentSport
 
     init {
-        loadLeagues()
+        loadLeagues(SportType.FOOTBALL)
     }
 
-    fun loadLeagues() {
+    fun setSport(sportType: SportType) {
+        _currentSport.value = sportType
+        loadLeagues(sportType)
+    }
+
+    fun loadLeagues(sportType: SportType) {
         viewModelScope.launch {
             _leaguesState.value = LeaguesUiState.Loading
-            getLeaguesUseCase()
+            getLeaguesUseCase(sportType.name)
                 .onSuccess { leagues ->
                     _leaguesState.value = LeaguesUiState.Success(leagues)
                     if (leagues.isNotEmpty()) {
-                        loadLeagueSchedule(leagues.first().id)
+                        loadLeagueSchedule(leagues.first().id, sportType)
                     } else {
                         _leagueScheduleState.value = ScheduleUiState.Error("Лиги не найдены.")
                     }
@@ -59,16 +64,21 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun loadLeagueSchedule(leagueId: String) {
+    fun loadLeagueSchedule(leagueId: String, sportType: SportType = _currentSport.value) {
         viewModelScope.launch {
             _leagueScheduleState.value = ScheduleUiState.Loading
-            getScheduleUseCase(leagueId)
-                .onSuccess { matches ->
-                    _leagueScheduleState.value = ScheduleUiState.Success(matches)
-                }
-                .onFailure { error ->
-                    _leagueScheduleState.value = ScheduleUiState.Error(error.message ?: "Unknown error")
-                }
+            val result = if (sportType == SportType.TENNIS) {
+                repository.getTennisSchedule(leagueId)
+            } else {
+                getScheduleUseCase(leagueId)
+            }
+            
+            result.onSuccess { matches ->
+                _leagueScheduleState.value = ScheduleUiState.Success(matches)
+            }
+            .onFailure { error ->
+                _leagueScheduleState.value = ScheduleUiState.Error(error.message ?: "Unknown error")
+            }
         }
     }
 
