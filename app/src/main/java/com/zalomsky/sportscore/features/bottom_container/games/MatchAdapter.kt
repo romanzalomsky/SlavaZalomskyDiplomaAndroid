@@ -50,14 +50,14 @@ class MatchAdapter(
                 timeTextView.text = "TBD"
             }
 
-            homeTeamName.text = match.homeTeam.teamName
-            awayTeamName.text = match.awayTeam.teamName
+            homeTeamName.text = match.homeName
+            awayTeamName.text = match.awayName
 
             homeTeamScore.text = match.homeScore?.toString() ?: "-"
             awayTeamScore.text = match.awayScore?.toString() ?: "-"
 
-            loadImage(homeTeamIcon, match.homeTeam.teamIcon)
-            loadImage(awayTeamIcon, match.awayTeam.teamIcon)
+            loadImage(homeTeamIcon, match.homeImageUrl)
+            loadImage(awayTeamIcon, match.awayImageUrl)
         }
 
         private fun loadImage(imageView: ImageView, url: String?) {

@@ -42,6 +42,12 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.playersRecyclerView)
+        val btnBack = view.findViewById<View>(R.id.btnBack)
+        val playerSearchEt = view.findViewById<TextInputEditText>(R.id.playerSearchEditText)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
         playerAdapter = PlayerAdapter(emptyList())
 
@@ -57,6 +63,16 @@ class PlayerFragment : Fragment() {
                 playerAdapter.updateList(it)
             }
         }
+
+        playerSearchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().lowercase()
+                val filteredList = viewModel.players.value?.filter { it.playerName.lowercase().contains(query) } ?: emptyList()
+                playerAdapter.updateList(filteredList)
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
 
         if (viewModel.players.value.isNullOrEmpty()) {
             viewModel.getPlayersList()

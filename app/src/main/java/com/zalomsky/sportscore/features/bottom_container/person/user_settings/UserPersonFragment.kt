@@ -153,8 +153,9 @@ class UserPersonFragment : Fragment() {
         }
 
         viewModel.message.observe(viewLifecycleOwner) { message ->
-            if (message.isNotEmpty()) {
+            if (message != null && message.isNotEmpty()) {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                viewModel.clearMessage()
             }
         }
     }

@@ -161,7 +161,9 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun filterByTeamName(query: String) {
-        val filtered = favoriteMatches.filter { it.homeTeam.teamName.contains(query, true) || it.awayTeam.teamName.contains(query, true) }
+        val filtered = favoriteMatches.filter { match ->
+            match.homeName.contains(query, true) || match.awayName.contains(query, true)
+        }
         renderMatches(filtered)
     }
 

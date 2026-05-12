@@ -35,34 +35,6 @@ class HomeFragment : Fragment() {
         if (navHostFragment != null) {
             navController = navHostFragment.navController
             bottomNavigationView.setupWithNavController(navController)
-            
-            // Добавляем плавную анимацию масштабирования при нажатии
-            bottomNavigationView.setOnItemSelectedListener { item ->
-                if (item.itemId != bottomNavigationView.selectedItemId) {
-                    val itemView = bottomNavigationView.findViewById<View>(item.itemId)
-                    itemView?.let { animateIcon(it) }
-                    
-                    // Стандартная обработка навигации
-                    navController.navigate(item.itemId)
-                }
-                true
-            }
         }
-    }
-
-    private fun animateIcon(view: View) {
-        view.animate()
-            .scaleX(1.15f)
-            .scaleY(1.15f)
-            .setDuration(150)
-            .setInterpolator(OvershootInterpolator())
-            .withEndAction {
-                view.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(150)
-                    .start()
-            }
-            .start()
     }
 }

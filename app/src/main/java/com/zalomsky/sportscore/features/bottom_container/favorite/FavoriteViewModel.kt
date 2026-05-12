@@ -33,8 +33,12 @@ class FavoriteViewModel @Inject constructor(
     private val _favoriteTeams = MutableLiveData<List<TeamResponseModel>>()
     val favoriteTeams: LiveData<List<TeamResponseModel>> = _favoriteTeams
 
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String> = _message
+    private val _message = MutableLiveData<String?>()
+    val message: LiveData<String?> = _message
+
+    fun clearMessage() {
+        _message.postValue(null)
+    }
 
     fun searchTeamsSimple(query: String) {
         viewModelScope.launch(Dispatchers.IO) {

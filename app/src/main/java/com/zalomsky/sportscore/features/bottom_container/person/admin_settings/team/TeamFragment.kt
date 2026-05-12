@@ -47,6 +47,11 @@ class TeamFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.teamsRecyclerView)
+        val btnBack = view.findViewById<View>(R.id.btnBack)
+        val teamSearchEt = view.findViewById<TextInputEditText>(R.id.teamSearchEditText)
+        val fabAdd = view.findViewById<View>(R.id.fabAddTeam)
+        val addFormContainer = view.findViewById<View>(R.id.addTeamFormContainer)
+        val btnCancelAdd = view.findViewById<View>(R.id.btnCancelAdd)
 
         val teamNameEt = view.findViewById<TextInputEditText>(R.id.teamNameEditText)
         val teamImageEt = view.findViewById<TextInputEditText>(R.id.teamImageEditText)
@@ -57,6 +62,20 @@ class TeamFragment : Fragment() {
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextViewTeam)
         val citySelector = view.findViewById<AutoCompleteTextView>(R.id.cityAutoCompleteTextView)
         val addButton = view.findViewById<Button>(R.id.addTeamButton)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        fabAdd.setOnClickListener {
+            addFormContainer.visibility = View.VISIBLE
+            fabAdd.visibility = View.GONE
+        }
+
+        btnCancelAdd.setOnClickListener {
+            addFormContainer.visibility = View.GONE
+            fabAdd.visibility = View.VISIBLE
+        }
 
         teamAdapter = TeamAdapter(emptyList())
 
@@ -70,6 +89,16 @@ class TeamFragment : Fragment() {
                 teamAdapter.updateList(it)
             }
         }
+
+        teamSearchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().lowercase()
+                val filteredList = viewModel.teams.value?.filter { it.teamName.lowercase().contains(query) } ?: emptyList()
+                teamAdapter.updateList(filteredList)
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
 
         if (viewModel.teams.value.isNullOrEmpty()) {
             viewModel.getTeamsList()
@@ -152,9 +181,11 @@ class TeamFragment : Fragment() {
                     teamCoachEt.setText("")
                     teamStadiumEt.setText("")
                     countrySelector.setText("")
-                    countrySelector.setText("")
+                    citySelector.setText("")
                     selectedCityId = null
                     selectedCountryId = null
+                    addFormContainer.visibility = View.GONE
+                    fabAdd.visibility = View.VISIBLE
                     Toast.makeText(context, "Команда '${name}' успешно добавлена!", Toast.LENGTH_SHORT).show()
                 }
             } else {

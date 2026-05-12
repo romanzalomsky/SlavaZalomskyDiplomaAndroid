@@ -22,7 +22,7 @@ class FavoriteSearchTeamAdapter(
     class TeamSimpleViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val teamNameText: TextView = view.findViewById(R.id.teamSimpleNameTextView)
         val teamIconImage: ImageView = view.findViewById(R.id.teamSimpleIconImageView)
-        val favoriteIcon: ImageView = view.findViewById(R.id.countrySimpleFlagImageView)
+        val favoriteIcon: View = view.findViewById(R.id.btnAddToFavorite)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSimpleViewHolder {

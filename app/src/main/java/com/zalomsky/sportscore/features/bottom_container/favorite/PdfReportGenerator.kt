@@ -71,12 +71,11 @@ class PdfReportGenerator(private val context: Context) {
     }
 
     private fun formatMatchDetails(match: MatchResponseModel): String {
-        val matchTime = match.matchDate ?: 0L
-        val homeTeamName = match.homeTeam.teamName ?: "НЕТ ДАННЫХ"
-        val awayTeamName = match.awayTeam.teamName ?: "НЕТ ДАННЫХ"
+        val homeName = match.homeName
+        val awayName = match.awayName
         val homeScore = match.homeScore?.toString() ?: "Н/Д"
         val awayScore = match.awayScore?.toString() ?: "Н/Д"
-        val leagueName = match.leagueId ?: "НЕТ ДАННЫХ"
+        val leagueName = match.leagueId.ifEmpty { "НЕТ ДАННЫХ" }
 
         val date = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(Date())
 
@@ -84,7 +83,7 @@ class PdfReportGenerator(private val context: Context) {
         ---
         Лига: $leagueName
         Дата: $date
-        Матч: $homeTeamName vs $awayTeamName
+        Матч: $homeName vs $awayName
         Счет: $homeScore:$awayScore
     """.trimIndent()
     }

@@ -36,10 +36,29 @@ class CityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.citiesRecyclerView)
+        val btnBack = view.findViewById<View>(R.id.btnBack)
+        val citySearchEt = view.findViewById<TextInputEditText>(R.id.citySearchEditText)
+        val fabAdd = view.findViewById<View>(R.id.fabAddCity)
+        val addFormContainer = view.findViewById<View>(R.id.addCityFormContainer)
+        val btnCancelAdd = view.findViewById<View>(R.id.btnCancelAdd)
 
         val cityNameEt = view.findViewById<TextInputEditText>(R.id.cityNameEditText)
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextView)
         val addButton = view.findViewById<Button>(R.id.addCityButton)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        fabAdd.setOnClickListener {
+            addFormContainer.visibility = View.VISIBLE
+            fabAdd.visibility = View.GONE
+        }
+
+        btnCancelAdd.setOnClickListener {
+            addFormContainer.visibility = View.GONE
+            fabAdd.visibility = View.VISIBLE
+        }
 
         cityAdapter = CityAdapter(emptyList()) { cityToDelete ->
             showDeleteConfirmationDialog(cityToDelete)
@@ -57,6 +76,16 @@ class CityFragment : Fragment() {
                 cityAdapter.updateList(it)
             }
         }
+
+        citySearchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().lowercase()
+                val filteredList = viewModel.cities.value?.filter { it.name.lowercase().contains(query) } ?: emptyList()
+                cityAdapter.updateList(filteredList)
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
 
         if (viewModel.cities.value.isNullOrEmpty()) {
             viewModel.getCitiesList()
@@ -93,6 +122,8 @@ class CityFragment : Fragment() {
                     cityNameEt.setText("")
                     countrySelector.setText("")
                     selectedCountryId = null
+                    addFormContainer.visibility = View.GONE
+                    fabAdd.visibility = View.VISIBLE
                     Toast.makeText(context, "Город '${name}' успешно добавлен!", Toast.LENGTH_SHORT).show()
                 }
             } else {

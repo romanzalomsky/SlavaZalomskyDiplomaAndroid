@@ -43,6 +43,11 @@ class LeagueFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.leaguesRecyclerView)
+        val btnBack = view.findViewById<View>(R.id.btnBack)
+        val leagueSearchEt = view.findViewById<TextInputEditText>(R.id.leagueSearchEditText)
+        val fabAdd = view.findViewById<View>(R.id.fabAddLeague)
+        val addFormContainer = view.findViewById<View>(R.id.addLeagueFormContainer)
+        val btnCancelAdd = view.findViewById<View>(R.id.btnCancelAdd)
 
         val leagueNameEt = view.findViewById<TextInputEditText>(R.id.leagueNameEditText)
         val leagueImageEt = view.findViewById<TextInputEditText>(R.id.leagueImageEditText)
@@ -50,6 +55,21 @@ class LeagueFragment : Fragment() {
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.countryAutoCompleteTextViewLeague)
         val sportTypeSelector = view.findViewById<AutoCompleteTextView>(R.id.sportTypeAutoCompleteTextView)
         val addButton = view.findViewById<Button>(R.id.addLeagueButton)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        fabAdd.setOnClickListener {
+            addFormContainer.visibility = View.VISIBLE
+            fabAdd.visibility = View.GONE
+        }
+
+        btnCancelAdd.setOnClickListener {
+            addFormContainer.visibility = View.GONE
+            fabAdd.visibility = View.VISIBLE
+        }
+
         val sportAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
@@ -85,6 +105,16 @@ class LeagueFragment : Fragment() {
                 leagueAdapter.updateList(it)
             }
         }
+
+        leagueSearchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().lowercase()
+                val filteredList = viewModel.leagues.value?.filter { it.leagueName.lowercase().contains(query) } ?: emptyList()
+                leagueAdapter.updateList(filteredList)
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
 
         if (viewModel.leagues.value.isNullOrEmpty()) {
             viewModel.getLeaguesList()
@@ -131,6 +161,8 @@ class LeagueFragment : Fragment() {
                     sportTypeSelector.setText(SportType.FOOTBALL.name, false)
                     selectedSportType = SportType.FOOTBALL.name
                     selectedCountryId = null
+                    addFormContainer.visibility = View.GONE
+                    fabAdd.visibility = View.VISIBLE
                     Toast.makeText(context, "Лига '${name}' успешно добавлена!", Toast.LENGTH_SHORT).show()
                 }
             } else {

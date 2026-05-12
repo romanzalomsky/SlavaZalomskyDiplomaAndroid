@@ -28,10 +28,29 @@ class CountryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.countriesRecyclerView)
+        val btnBack = view.findViewById<View>(R.id.btnBack)
+        val countrySearchEt = view.findViewById<TextInputEditText>(R.id.countrySearchEditText)
+        val fabAdd = view.findViewById<View>(R.id.fabAddCountry)
+        val addFormContainer = view.findViewById<View>(R.id.addCountryFormContainer)
+        val btnCancelAdd = view.findViewById<View>(R.id.btnCancelAdd)
 
         val countryNameEt = view.findViewById<TextInputEditText>(R.id.countryNameEditText)
-        val flagEt = view.findViewById<TextInputEditText>(R.id.flagEditText)
+        val flagEt = view.findViewById<TextInputEditText>(R.id.countryFlagEditText)
         val addButton = view.findViewById<Button>(R.id.addCountryButton)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        fabAdd.setOnClickListener {
+            addFormContainer.visibility = View.VISIBLE
+            fabAdd.visibility = View.GONE
+        }
+
+        btnCancelAdd.setOnClickListener {
+            addFormContainer.visibility = View.GONE
+            fabAdd.visibility = View.VISIBLE
+        }
 
         countryAdapter = CountryAdapter(emptyList()) { countryToDelete ->
             showDeleteConfirmationDialog(countryToDelete)
@@ -48,6 +67,16 @@ class CountryFragment : Fragment() {
             }
         }
 
+        countrySearchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().lowercase()
+                val filteredList = viewModel.countries.value?.filter { it.name.lowercase().contains(query) } ?: emptyList()
+                countryAdapter.updateList(filteredList)
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
         if (viewModel.countries.value.isNullOrEmpty()) {
             viewModel.getCountriesList()
         }
@@ -62,6 +91,8 @@ class CountryFragment : Fragment() {
                 viewModel.addCountry(newCountry) {
                     countryNameEt.setText("")
                     flagEt.setText("")
+                    addFormContainer.visibility = View.GONE
+                    fabAdd.visibility = View.VISIBLE
                     Toast.makeText(
                         context,
                         "Страна '${name}' успешно добавлена!",

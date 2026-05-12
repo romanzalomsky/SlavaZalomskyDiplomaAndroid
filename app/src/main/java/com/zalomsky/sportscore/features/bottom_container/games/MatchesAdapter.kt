@@ -60,8 +60,8 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
                 timeTextView.text = "TBD"
             }
 
-            homeTeamName.text = match.homeTeam.teamName
-            awayTeamName.text = match.awayTeam.teamName
+            homeTeamName.text = match.homeName
+            awayTeamName.text = match.awayName
 
             homeTeamScore.text = match.homeScore?.toString() ?: "-"
             awayTeamScore.text = match.awayScore?.toString() ?: "-"
@@ -75,8 +75,8 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
                 }
             }
 
-            loadImage(homeTeamIcon, match.homeTeam.teamIcon)
-            loadImage(awayTeamIcon, match.awayTeam.teamIcon)
+            loadImage(homeTeamIcon, match.homeImageUrl)
+            loadImage(awayTeamIcon, match.awayImageUrl)
         }
 
         private fun loadImage(imageView: ImageView, url: String?) {
@@ -115,8 +115,8 @@ class MatchesAdapter : ListAdapter<MatchResponseModel, MatchesAdapter.MatchViewH
             newItem: MatchResponseModel
         ): Boolean {
             return oldItem.matchDate == newItem.matchDate &&
-                    oldItem.homeTeam.teamName == newItem.homeTeam.teamName &&
-                    oldItem.awayTeam.teamName == newItem.awayTeam.teamName
+                    oldItem.homeName == newItem.homeName &&
+                    oldItem.awayName == newItem.awayName
         }
     }
 }
