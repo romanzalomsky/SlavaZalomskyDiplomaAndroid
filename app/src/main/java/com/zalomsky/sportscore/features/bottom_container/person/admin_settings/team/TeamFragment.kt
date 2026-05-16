@@ -119,6 +119,7 @@ class TeamFragment : Fragment() {
                 countrySelector.setAdapter(adapter)
             }
         }
+        countrySelector.setOnClickListener { countrySelector.showDropDown() }
 
         viewModel.cities.observe(viewLifecycleOwner) { cities ->
             citiesList = cities
@@ -132,6 +133,7 @@ class TeamFragment : Fragment() {
                 citySelector.setAdapter(adapter)
             }
         }
+        citySelector.setOnClickListener { citySelector.showDropDown() }
 
         countrySelector.onItemClickListener = AdapterView.OnItemClickListener {
                 parent, _, position, _ ->

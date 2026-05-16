@@ -11,5 +11,6 @@ data class PlayerModel(
     @SerializedName("playerName") val playerName: String,
     @SerializedName("playerImage") val playerImage: String,
     @SerializedName("playerPosition") val playerPosition: String,
-    @SerializedName("teamId") val teamId: String,
+    @SerializedName("teamId") val teamId: String? = null,
+    @SerializedName("sportType") val sportType: String? = null,
 )

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.models.LeagueModel
+import com.zalomsky.sportscore.domain.models.SportType
+import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.player.LeaguePlayersAdapter
+import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.player.PlayerSearchAdapter
 import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.team.LeagueTeamsAdapter
 import com.zalomsky.sportscore.features.bottom_container.person.admin_settings.team.TeamSearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,15 +44,19 @@ class LeagueDetailFragment : Fragment() {
     private lateinit var teamSearchEditText: EditText
     private lateinit var searchResultsRecyclerView: RecyclerView
 
+    private lateinit var labelLeagueTeams: TextView
+    private lateinit var labelSearchTeams: TextView
+
     private lateinit var leagueTeamsAdapter: LeagueTeamsAdapter
     private lateinit var teamSearchAdapter: TeamSearchAdapter
+    private lateinit var leaguePlayersAdapter: LeaguePlayersAdapter
+    private lateinit var playerSearchAdapter: PlayerSearchAdapter
 
     private val viewModel: LeagueViewModel by viewModels()
-
     private val args: LeagueDetailFragmentArgs by navArgs()
 
+    private var isTennis: Boolean = false
     private var searchJob: Job? = null
-
     private var selectedCountryId: String? = null
     private var countryList: List<Country> = emptyList()
 
@@ -56,7 +64,6 @@ class LeagueDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_league_detail, container, false)
     }
 
@@ -64,15 +71,13 @@ class LeagueDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
-
         viewModel.getCountriesList()
 
         val leagueId = args.leagueId
         viewModel.getLeagueDetails(leagueId)
 
-        setupTeamRecyclerViews()
-        setupTeamSearch()
-
+        setupRecyclerViews()
+        setupSearch()
         observeViewModel()
         setupUpdateListener(leagueId)
     }
@@ -85,42 +90,57 @@ class LeagueDetailFragment : Fragment() {
         leagueTeamsRecyclerView = view.findViewById(R.id.leagueTeamsRecyclerView)
         teamSearchEditText = view.findViewById(R.id.teamSearchEditText)
         searchResultsRecyclerView = view.findViewById(R.id.searchResultsRecyclerView)
+        labelLeagueTeams = view.findViewById(R.id.labelLeagueTeams)
+        labelSearchTeams = view.findViewById(R.id.labelSearchTeams)
     }
 
-    private fun setupTeamRecyclerViews() {
+    private fun setupRecyclerViews() {
         leagueTeamsAdapter = LeagueTeamsAdapter(emptyList())
-        leagueTeamsRecyclerView.adapter = leagueTeamsAdapter
+        leaguePlayersAdapter = LeaguePlayersAdapter(emptyList())
 
         teamSearchAdapter = TeamSearchAdapter(emptyList()) { teamId ->
             assignTeamToLeague(teamId, args.leagueId)
         }
-        searchResultsRecyclerView.adapter = teamSearchAdapter
+        playerSearchAdapter = PlayerSearchAdapter(emptyList()) { playerId ->
+            assignPlayerToLeague(playerId, args.leagueId)
+        }
     }
 
     private fun assignTeamToLeague(teamId: String, leagueId: String) {
         viewModel.assignTeamToLeague(teamId, leagueId) {
             Toast.makeText(context, "Команда добавлена в лигу!", Toast.LENGTH_SHORT).show()
-            viewModel.getLeagueDetails(leagueId)
+            viewModel.loadLeagueTeams(leagueId)
             teamSearchEditText.setText("")
         }
     }
 
-    private fun setupTeamSearch() {
+    private fun assignPlayerToLeague(playerId: String, leagueId: String) {
+        viewModel.assignPlayerToLeague(playerId, leagueId) {
+            Toast.makeText(context, "Игрок добавлен в лигу!", Toast.LENGTH_SHORT).show()
+            viewModel.loadLeaguePlayers(leagueId)
+            teamSearchEditText.setText("")
+        }
+    }
+
+    private fun setupSearch() {
         teamSearchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 searchJob?.cancel()
-
                 val query = s.toString().trim()
                 val currentLeagueId = args.leagueId
                 if (query.isNotEmpty()) {
                     searchJob = viewLifecycleOwner.lifecycleScope.launch {
                         delay(300)
-                        viewModel.searchTeams(query, currentLeagueId)
+                        if (isTennis) {
+                            viewModel.searchPlayers(query, currentLeagueId)
+                        } else {
+                            viewModel.searchTeams(query, currentLeagueId)
+                        }
                     }
                 } else {
                     teamSearchAdapter.updateList(emptyList())
+                    playerSearchAdapter.updateList(emptyList())
                 }
             }
             override fun afterTextChanged(s: Editable?) {}
@@ -137,6 +157,11 @@ class LeagueDetailFragment : Fragment() {
             if (league != null) {
                 leagueNameEditText.setText(league.leagueName)
                 leagueImageEditText.setText(league.leagueImage)
+                isTennis = league.sportType.equals(SportType.TENNIS.name, true)
+
+                updateLabels(isTennis)
+                updateAdapters(isTennis)
+                viewModel.loadLeagueParticipants(league.id, isTennis)
 
                 val currentCountry = countryList.find { it.id == league.countryId }
                 if (currentCountry != null) {
@@ -150,11 +175,41 @@ class LeagueDetailFragment : Fragment() {
         }
 
         viewModel.leagueTeams.observe(viewLifecycleOwner) { teams ->
-            leagueTeamsAdapter.updateList(teams)
+            if (!isTennis) leagueTeamsAdapter.updateList(teams)
+        }
+
+        viewModel.leaguePlayers.observe(viewLifecycleOwner) { players ->
+            if (isTennis) leaguePlayersAdapter.updateList(players)
         }
 
         viewModel.searchResults.observe(viewLifecycleOwner) { teams ->
-            teamSearchAdapter.updateList(teams)
+            if (!isTennis) teamSearchAdapter.updateList(teams)
+        }
+
+        viewModel.playerSearchResults.observe(viewLifecycleOwner) { players ->
+            if (isTennis) playerSearchAdapter.updateList(players)
+        }
+    }
+
+    private fun updateLabels(isTennis: Boolean) {
+        if (isTennis) {
+            labelLeagueTeams.text = "Игроки в лиге"
+            labelSearchTeams.text = "Добавить игрока в лигу"
+            teamSearchEditText.hint = "Поиск игрока по имени"
+        } else {
+            labelLeagueTeams.text = "Команды в лиге"
+            labelSearchTeams.text = "Добавить команду в лигу"
+            teamSearchEditText.hint = "Поиск команды по названию"
+        }
+    }
+
+    private fun updateAdapters(isTennis: Boolean) {
+        if (isTennis) {
+            leagueTeamsRecyclerView.adapter = leaguePlayersAdapter
+            searchResultsRecyclerView.adapter = playerSearchAdapter
+        } else {
+            leagueTeamsRecyclerView.adapter = leagueTeamsAdapter
+            searchResultsRecyclerView.adapter = teamSearchAdapter
         }
     }
 

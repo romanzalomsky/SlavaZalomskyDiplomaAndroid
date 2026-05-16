@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -22,6 +23,18 @@ interface PlayerApi {
 
     @GET("auth/players/search")
     suspend fun searchPlayers(@Query("q") query: String): List<PlayerResponseModel>
+
+    @GET("auth/players/searchForLeague")
+    suspend fun searchPlayersForLeague(
+        @Query("query") query: String,
+        @Query("leagueId") leagueId: String
+    ): List<PlayerResponseModel>
+
+    @PUT("auth/players/{playerId}/assign")
+    suspend fun assignPlayerToLeague(
+        @Path("playerId") playerId: String,
+        @Body leagueIdWrapper: com.zalomsky.sportscore.domain.models.LeagueIdWrapper
+    ): Response<Unit>
 
     @GET("auth/favorite/players")
     suspend fun getFavoritePlayers(): List<PlayerResponseModel>

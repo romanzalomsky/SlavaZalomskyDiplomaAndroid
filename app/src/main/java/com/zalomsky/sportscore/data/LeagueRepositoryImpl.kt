@@ -5,6 +5,7 @@ import com.zalomsky.sportscore.api.TeamApi
 import com.zalomsky.sportscore.domain.models.LeagueIdWrapper
 import com.zalomsky.sportscore.domain.models.LeagueModel
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.PlayerResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import retrofit2.Response
 import javax.inject.Inject
@@ -33,5 +34,9 @@ class LeagueRepositoryImpl @Inject constructor(
 
     suspend fun getTeamsByLeagueId(leagueId: String): List<TeamResponseModel> {
         return leagueApi.getTeamsByLeagueId(leagueId)
+    }
+
+    suspend fun getPlayersByLeagueId(leagueId: String): List<PlayerResponseModel> {
+        return leagueApi.getPlayersByLeagueId(leagueId)
     }
 }

@@ -9,12 +9,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.zalomsky.sportscore.R
 import com.zalomsky.sportscore.domain.models.LoginRequest
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthFragment : Fragment() {
@@ -55,8 +58,18 @@ class AuthFragment : Fragment() {
         regLink.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_authFragment_to_registerFragment)
         }
+        observeViewModel()
+
         authButton.setOnClickListener {
             performLogin()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                authButton.isEnabled = !isLoading
+            }
         }
     }
 
@@ -80,7 +93,8 @@ class AuthFragment : Fragment() {
                 findNavController().navigate(R.id.action_authFragment_to_homeFragment)
             },
             onError = {
-                Toast.makeText(requireContext(), "Что с ебалом)))", Toast.LENGTH_SHORT).show()
+                val errorMsg = viewModel.error.value ?: "Ошибка входа"
+                Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
             })
     }
 }

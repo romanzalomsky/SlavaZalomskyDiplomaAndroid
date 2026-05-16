@@ -8,12 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.sportscore.domain.models.Country
 import com.zalomsky.sportscore.domain.models.LeagueModel
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.PlayerResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
 import com.zalomsky.sportscore.domain.usecase.league.GetLeagueByIdUseCase
 import com.zalomsky.sportscore.domain.usecase.league.InsertLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.UpdateLeagueUseCase
+import com.zalomsky.sportscore.domain.usecase.player.AssignPlayerToLeagueUseCase
+import com.zalomsky.sportscore.domain.usecase.player.GetPlayersByLeagueIdUseCase
+import com.zalomsky.sportscore.domain.usecase.player.SearchPlayersForLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.team.AssignTeamToLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.team.GetTeamsByLeagueIdUseCase
 import com.zalomsky.sportscore.domain.usecase.team.SearchTeamsUseCase
@@ -33,6 +37,9 @@ class LeagueViewModel @Inject constructor(
     private val searchTeamsUseCase: SearchTeamsUseCase,
     private val assignTeamToLeagueUseCase: AssignTeamToLeagueUseCase,
     private val getTeamsByLeagueIdUseCase: GetTeamsByLeagueIdUseCase,
+    private val getPlayersByLeagueIdUseCase: GetPlayersByLeagueIdUseCase,
+    private val searchPlayersForLeagueUseCase: SearchPlayersForLeagueUseCase,
+    private val assignPlayerToLeagueUseCase: AssignPlayerToLeagueUseCase,
     private val notifier: Notifier
 ): ViewModel() {
 
@@ -52,9 +59,25 @@ class LeagueViewModel @Inject constructor(
     val searchResults: LiveData<List<TeamResponseModel>>
         get() = _searchResults
 
+    private val _playerSearchResults = MutableLiveData<List<PlayerResponseModel>>()
+    val playerSearchResults: LiveData<List<PlayerResponseModel>>
+        get() = _playerSearchResults
+
     private val _leagueTeams = MutableLiveData<List<TeamResponseModel>>()
     val leagueTeams: LiveData<List<TeamResponseModel>>
         get() = _leagueTeams
+
+    private val _leaguePlayers = MutableLiveData<List<PlayerResponseModel>>()
+    val leaguePlayers: LiveData<List<PlayerResponseModel>>
+        get() = _leaguePlayers
+
+    fun loadLeagueParticipants(leagueId: String, isTennis: Boolean) {
+        if (isTennis) {
+            loadLeaguePlayers(leagueId)
+        } else {
+            loadLeagueTeams(leagueId)
+        }
+    }
 
     fun loadLeagueTeams(leagueId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -64,6 +87,18 @@ class LeagueViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("LeagueViewModel", "Exception loading league teams -> ${e.localizedMessage}")
                 _leagueTeams.postValue(emptyList())
+            }
+        }
+    }
+
+    fun loadLeaguePlayers(leagueId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val players = getPlayersByLeagueIdUseCase(leagueId)
+                _leaguePlayers.postValue(players)
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception loading league players -> ${e.localizedMessage}")
+                _leaguePlayers.postValue(emptyList())
             }
         }
     }
@@ -147,6 +182,18 @@ class LeagueViewModel @Inject constructor(
         }
     }
 
+    fun searchPlayers(query: String, leagueId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val players = searchPlayersForLeagueUseCase(query, leagueId)
+                _playerSearchResults.postValue(players)
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception searching players -> ${e.localizedMessage}")
+                _playerSearchResults.postValue(emptyList())
+            }
+        }
+    }
+
     fun assignTeamToLeague(teamId: String, leagueId: String, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
@@ -168,6 +215,23 @@ class LeagueViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("LeagueViewModel", "Exception assigning team to league -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun assignPlayerToLeague(playerId: String, leagueId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                val response = assignPlayerToLeagueUseCase(playerId, leagueId)
+
+                if (response.isSuccessful) {
+                    onSuccess()
+                    loadLeaguePlayers(leagueId)
+                } else {
+                    Log.e("LeagueViewModel", "Player assignment failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception assigning player to league -> ${e.localizedMessage}")
             }
         }
     }

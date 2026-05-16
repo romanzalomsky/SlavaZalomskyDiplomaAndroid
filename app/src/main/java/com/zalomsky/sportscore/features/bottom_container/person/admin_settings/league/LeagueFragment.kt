@@ -73,9 +73,13 @@ class LeagueFragment : Fragment() {
         val sportAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
-            SportType.values().map { it.name }
+            SportType.entries.map { it.name }
         )
         sportTypeSelector.setAdapter(sportAdapter)
+        // Чтобы при нажатии всегда выпадал весь список, а не фильтровался по текущему тексту
+        sportTypeSelector.setOnClickListener {
+            sportTypeSelector.showDropDown()
+        }
         sportTypeSelector.setText(selectedSportType, false)
         sportTypeSelector.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
             selectedSportType = parent.getItemAtPosition(position).toString()

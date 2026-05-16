@@ -2,6 +2,7 @@ package com.zalomsky.sportscore.api
 
 import com.zalomsky.sportscore.domain.models.LeagueModel
 import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
+import com.zalomsky.sportscore.domain.models.responses.PlayerResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -28,4 +29,7 @@ interface LeagueApi {
 
     @GET("auth/leagues/{leagueId}/teams")
     suspend fun getTeamsByLeagueId(@Path("leagueId") leagueId: String): List<TeamResponseModel>
+
+    @GET("auth/leagues/{leagueId}/players")
+    suspend fun getPlayersByLeagueId(@Path("leagueId") leagueId: String): List<PlayerResponseModel>
 }

@@ -21,4 +21,13 @@ class PlayerRepositoryImpl @Inject constructor(
     suspend fun deleteFavoritePlayer(playerId: String) = playerApi.deleteFavoritePlayer(playerId)
 
     suspend fun insertPlayer(player: PlayerModel) = playerApi.insertPlayer(player)
+
+    suspend fun searchPlayersForLeague(query: String, leagueId: String): List<PlayerResponseModel> {
+        return playerApi.searchPlayersForLeague(query, leagueId)
+    }
+
+    suspend fun assignPlayerToLeague(playerId: String, leagueId: String): retrofit2.Response<Unit> {
+        val wrapper = com.zalomsky.sportscore.domain.models.LeagueIdWrapper(leagueId = leagueId)
+        return playerApi.assignPlayerToLeague(playerId, wrapper)
+    }
 }

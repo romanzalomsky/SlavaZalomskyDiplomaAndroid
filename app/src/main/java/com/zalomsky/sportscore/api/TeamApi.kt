@@ -46,7 +46,7 @@ interface TeamApi {
     @POST("auth/favorites/add")
     suspend fun addFavoriteTeam(@Body request: FavoriteTeamRequest): BaseResponse
 
-    @DELETE("auth/favorites/delete/{teamId}")
+    @DELETE("auth/favorites/{teamId}")
     suspend fun deleteFromFavorite(@Path("teamId") teamId: String): Response<BaseResponse>
 
     @GET("auth/favorites")

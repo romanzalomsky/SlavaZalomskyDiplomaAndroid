@@ -21,6 +21,7 @@ class PlayerAdapter(
         val playerPositionText: TextView = view.findViewById(R.id.playerPositionText)
         val playerTeamText: TextView = view.findViewById(R.id.playerTeamText)
         val playerTeamFlagView: ImageView = view.findViewById(R.id.playerTeamFlagView)
+        val playerTeamSeparator: View = view.findViewById(R.id.playerTeamSeparator)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
@@ -37,20 +38,30 @@ class PlayerAdapter(
 
         holder.playerNameText.text = player.playerName
         holder.playerPositionText.text = player.playerPosition
-        holder.playerTeamText.text = player.teamName
+
+        val hasTeam = !player.teamName.isNullOrBlank() && player.teamName != "null"
+        if (hasTeam) {
+            holder.playerTeamText.visibility = View.VISIBLE
+            holder.playerTeamFlagView.visibility = View.VISIBLE
+            holder.playerTeamSeparator.visibility = View.VISIBLE
+            holder.playerTeamText.text = player.teamName
+
+            Glide.with(holder.playerTeamFlagView.context)
+                .load(player.teamImage)
+                .placeholder(R.drawable.ic_download)
+                .error(R.drawable.ic_pause)
+                .into(holder.playerTeamFlagView)
+        } else {
+            holder.playerTeamText.visibility = View.GONE
+            holder.playerTeamFlagView.visibility = View.GONE
+            holder.playerTeamSeparator.visibility = View.GONE
+        }
 
         Glide.with(holder.playerImageView.context)
             .load(player.playerImage)
             .placeholder(R.drawable.ic_download)
             .error(R.drawable.ic_pause)
             .into(holder.playerImageView)
-
-        Glide.with(holder.playerTeamFlagView.context)
-            .load(player.teamImage)
-            .placeholder(R.drawable.ic_download)
-            .error(R.drawable.ic_pause)
-            .into(holder.playerTeamFlagView)
-
     }
 
     override fun getItemCount(): Int = players.size

@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
-    private val viewModel: GameViewModel by viewModels()
+    private val gameViewModel: GameViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private lateinit var matchesAdapter: MatchesAdapter
 
@@ -44,6 +44,8 @@ class FavoriteFragment : Fragment() {
     private lateinit var generatePdfFab: com.google.android.material.floatingactionbutton.FloatingActionButton
     private lateinit var sportSpinner: Spinner
     private lateinit var leagueSpinner: Spinner
+    private lateinit var searchEditText: android.widget.EditText
+
     private var leagues: List<LeagueResponseModel> = emptyList()
     private var filteredLeagues: List<LeagueResponseModel> = emptyList()
     private var favoriteMatches: List<MatchResponseModel> = emptyList()
@@ -69,13 +71,13 @@ class FavoriteFragment : Fragment() {
         generatePdfFab = view.findViewById(R.id.generatePdfFab)
         sportSpinner = view.findViewById(R.id.favoriteSportSpinner)
         leagueSpinner = view.findViewById(R.id.leagueSpinner)
+        searchEditText = view.findViewById(R.id.teamSearchEditText)
 
         matchesAdapter = MatchesAdapter()
-
         matchesRecyclerView.layoutManager = LinearLayoutManager(context)
         matchesRecyclerView.adapter = matchesAdapter
 
-        view.findViewById<android.widget.EditText>(R.id.teamSearchEditText).addTextChangedListener(object : android.text.TextWatcher {
+        searchEditText.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filterByTeamName(s.toString())
@@ -101,7 +103,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadFavoriteSchedule()
+        gameViewModel.loadFavoriteSchedule()
         setupSportSpinner()
         observeLeaguesState()
         observeScheduleState()
@@ -114,6 +116,8 @@ class FavoriteFragment : Fragment() {
         sportSpinner.adapter = sportAdapter
         sportSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedSport = sports[position]
+                updateSearchHint(selectedSport)
                 updateLeaguesFilter()
                 applyFilters()
             }
@@ -121,9 +125,17 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    private fun updateSearchHint(sport: String) {
+        searchEditText.hint = when (sport) {
+            "TENNIS" -> "Найти теннисиста в матчах..."
+            "FOOTBALL", "HOCKEY" -> "Найти команду в матчах..."
+            else -> "Поиск по матчам (игрок или команда)..."
+        }
+    }
+
     private fun observeLeaguesState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.leaguesState.collect { state ->
+            gameViewModel.leaguesState.collect { state ->
                 if (state is LeaguesUiState.Success) {
                     leagues = state.leagues
                     updateLeaguesFilter()
@@ -169,7 +181,7 @@ class FavoriteFragment : Fragment() {
 
     private fun observeScheduleState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.favoriteScheduleState.collect { state ->
+            gameViewModel.favoriteScheduleState.collect { state ->
                 when (state) {
                     is ScheduleUiState.Loading -> showLoading()
                     is ScheduleUiState.Success -> showData(state.matches)
@@ -232,7 +244,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun generatePdfReport() {
-        val matches = (viewModel.favoriteScheduleState.value as? ScheduleUiState.Success)?.matches
+        val matches = (gameViewModel.favoriteScheduleState.value as? ScheduleUiState.Success)?.matches
 
         if (matches.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Нет избранных матчей для отчета.", Toast.LENGTH_SHORT).show()

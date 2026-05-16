@@ -103,6 +103,7 @@
         android:id="@+id/addLeagueFormContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:visibility="gone"
         app:cardCornerRadius="24dp"
         app:cardElevation="16dp"
