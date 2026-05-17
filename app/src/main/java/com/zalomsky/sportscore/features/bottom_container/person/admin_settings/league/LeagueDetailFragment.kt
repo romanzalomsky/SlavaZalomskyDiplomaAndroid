@@ -39,6 +39,7 @@ class LeagueDetailFragment : Fragment() {
     private lateinit var leagueImageEditText: TextInputEditText
     private lateinit var countryAutoCompleteTextView: AutoCompleteTextView
     private lateinit var updateLeagueButton: Button
+    private lateinit var deleteLeagueButton: Button
 
     private lateinit var leagueTeamsRecyclerView: RecyclerView
     private lateinit var teamSearchInputLayout: com.google.android.material.textfield.TextInputLayout
@@ -81,6 +82,7 @@ class LeagueDetailFragment : Fragment() {
         setupSearch()
         observeViewModel()
         setupUpdateListener(leagueId)
+        setupDeleteListener(leagueId)
     }
 
     private fun initViews(view: View) {
@@ -88,6 +90,7 @@ class LeagueDetailFragment : Fragment() {
         leagueImageEditText = view.findViewById(R.id.leagueImageEditTextDetails)
         countryAutoCompleteTextView = view.findViewById(R.id.countryAutoCompleteTextViewLeagueDetails)
         updateLeagueButton = view.findViewById(R.id.updateLeagueButton)
+        deleteLeagueButton = view.findViewById(R.id.deleteLeagueButton)
         leagueTeamsRecyclerView = view.findViewById(R.id.leagueTeamsRecyclerView)
         teamSearchInputLayout = view.findViewById(R.id.teamSearchInputLayout)
         teamSearchEditText = view.findViewById(R.id.teamSearchEditText)
@@ -285,6 +288,22 @@ class LeagueDetailFragment : Fragment() {
                 Toast.makeText(context, "Лига успешно обновлена!", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
+        }
+    }
+
+    private fun setupDeleteListener(leagueId: String) {
+        deleteLeagueButton.setOnClickListener {
+            android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Удаление лиги")
+                .setMessage("Вы уверены, что хотите удалить эту лигу?")
+                .setPositiveButton("Удалить") { _, _ ->
+                    viewModel.deleteLeague(leagueId) {
+                        Toast.makeText(context, "Лига успешно удалена!", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
         }
     }
 }

@@ -23,6 +23,8 @@ class LeagueRepositoryImpl @Inject constructor(
 
     suspend fun updateLeague(leagueId: String, league: LeagueModel) = leagueApi.updateLeague(leagueId, league)
 
+    suspend fun deleteLeague(leagueId: String) = leagueApi.deleteLeague(leagueId)
+
     suspend fun searchTeams(query: String, leagueId: String): List<TeamResponseModel> {
         return teamApi.searchTeams(query, leagueId)
     }

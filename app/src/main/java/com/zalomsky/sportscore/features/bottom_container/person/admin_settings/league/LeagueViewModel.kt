@@ -11,6 +11,7 @@ import com.zalomsky.sportscore.domain.models.responses.LeagueResponseModel
 import com.zalomsky.sportscore.domain.models.responses.PlayerResponseModel
 import com.zalomsky.sportscore.domain.models.responses.TeamResponseModel
 import com.zalomsky.sportscore.domain.usecase.country.CountryUseCase
+import com.zalomsky.sportscore.domain.usecase.league.DeleteLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.GetLeagueByIdUseCase
 import com.zalomsky.sportscore.domain.usecase.league.InsertLeagueUseCase
 import com.zalomsky.sportscore.domain.usecase.league.LeagueUseCase
@@ -34,6 +35,7 @@ class LeagueViewModel @Inject constructor(
     private val countryUseCase: CountryUseCase,
     private val getLeagueByIdUseCase: GetLeagueByIdUseCase,
     private val updateLeagueUseCase: UpdateLeagueUseCase,
+    private val deleteLeagueUseCase: DeleteLeagueUseCase,
     private val searchTeamsUseCase: SearchTeamsUseCase,
     private val assignTeamToLeagueUseCase: AssignTeamToLeagueUseCase,
     private val getTeamsByLeagueIdUseCase: GetTeamsByLeagueIdUseCase,
@@ -174,6 +176,25 @@ class LeagueViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("LeagueViewModel", "Exception during league update -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun deleteLeague(leagueId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                val response = deleteLeagueUseCase(leagueId)
+
+                if (response.isSuccessful) {
+                    onSuccess()
+                    getLeaguesList()
+                } else {
+                    _message.postValue("Ошибка удаления: ${response.message() ?: response.code()}")
+                    Log.e("LeagueViewModel", "Delete failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("LeagueViewModel", "Exception during league deletion -> ${e.localizedMessage}")
+                _message.postValue("Ошибка: ${e.localizedMessage}")
             }
         }
     }

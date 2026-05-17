@@ -80,16 +80,33 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/updateLeagueButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/systemColor"
-            android:text="Обновить Лигу"
+            android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countryLeagueSelectorLayoutDetails" />
+            app:layout_constraintTop_toBottomOf="@+id/countryLeagueSelectorLayoutDetails">
+
+            <Button
+                android:id="@+id/updateLeagueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/systemColor"
+                android:text="Обновить Лигу" />
+
+            <Button
+                android:id="@+id/deleteLeagueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="Удалить Лигу" />
+        </LinearLayout>
 
         <View
             android:id="@+id/divider"
@@ -97,7 +114,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintTop_toBottomOf="@+id/updateLeagueButton" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonContainer" />
 
         <TextView
             android:id="@+id/labelLeagueTeams"
