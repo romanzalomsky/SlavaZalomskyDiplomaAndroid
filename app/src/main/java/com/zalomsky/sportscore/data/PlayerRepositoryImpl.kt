@@ -23,7 +23,7 @@ class PlayerRepositoryImpl @Inject constructor(
     suspend fun insertPlayer(player: PlayerModel) = playerApi.insertPlayer(player)
 
     suspend fun searchPlayersForLeague(query: String, leagueId: String): List<PlayerResponseModel> {
-        return playerApi.searchPlayersForLeague(query, leagueId)
+        return playerApi.searchPlayers(query)
     }
 
     suspend fun assignPlayerToLeague(playerId: String, leagueId: String): retrofit2.Response<Unit> {

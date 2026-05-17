@@ -71,6 +71,13 @@ class LeagueViewModel @Inject constructor(
     val leaguePlayers: LiveData<List<PlayerResponseModel>>
         get() = _leaguePlayers
 
+    private val _message = MutableLiveData<String?>()
+    val message: LiveData<String?> = _message
+
+    fun clearMessage() {
+        _message.postValue(null)
+    }
+
     fun loadLeagueParticipants(leagueId: String, isTennis: Boolean) {
         if (isTennis) {
             loadLeaguePlayers(leagueId)
@@ -145,7 +152,8 @@ class LeagueViewModel @Inject constructor(
                 val league = getLeagueByIdUseCase(leagueId)
                 _currentLeague.postValue(league)
 
-                loadLeagueTeams(leagueId)
+                val isTennis = league.sportType.equals("TENNIS", true)
+                loadLeagueParticipants(leagueId, isTennis)
             } catch (e: Exception) {
                 Log.e("LeagueViewModel", "Exception getting league details -> ${e.localizedMessage}")
                 _currentLeague.postValue(null)
@@ -211,6 +219,7 @@ class LeagueViewModel @Inject constructor(
                     }
 
                 } else {
+                    _message.postValue("Ошибка: ${response.message() ?: response.code()}")
                     Log.e("LeagueViewModel", "Team assignment failed: ${response.code()}")
                 }
             } catch (e: Exception) {
@@ -228,6 +237,7 @@ class LeagueViewModel @Inject constructor(
                     onSuccess()
                     loadLeaguePlayers(leagueId)
                 } else {
+                    _message.postValue("Ошибка: ${response.message() ?: response.code()}")
                     Log.e("LeagueViewModel", "Player assignment failed: ${response.code()}")
                 }
             } catch (e: Exception) {

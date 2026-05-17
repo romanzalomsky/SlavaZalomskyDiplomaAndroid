@@ -41,6 +41,7 @@ class LeagueDetailFragment : Fragment() {
     private lateinit var updateLeagueButton: Button
 
     private lateinit var leagueTeamsRecyclerView: RecyclerView
+    private lateinit var teamSearchInputLayout: com.google.android.material.textfield.TextInputLayout
     private lateinit var teamSearchEditText: EditText
     private lateinit var searchResultsRecyclerView: RecyclerView
 
@@ -88,6 +89,7 @@ class LeagueDetailFragment : Fragment() {
         countryAutoCompleteTextView = view.findViewById(R.id.countryAutoCompleteTextViewLeagueDetails)
         updateLeagueButton = view.findViewById(R.id.updateLeagueButton)
         leagueTeamsRecyclerView = view.findViewById(R.id.leagueTeamsRecyclerView)
+        teamSearchInputLayout = view.findViewById(R.id.teamSearchInputLayout)
         teamSearchEditText = view.findViewById(R.id.teamSearchEditText)
         searchResultsRecyclerView = view.findViewById(R.id.searchResultsRecyclerView)
         labelLeagueTeams = view.findViewById(R.id.labelLeagueTeams)
@@ -104,6 +106,10 @@ class LeagueDetailFragment : Fragment() {
         playerSearchAdapter = PlayerSearchAdapter(emptyList()) { playerId ->
             assignPlayerToLeague(playerId, args.leagueId)
         }
+        
+        // Устанавливаем адаптеры по умолчанию (футбольные)
+        leagueTeamsRecyclerView.adapter = leagueTeamsAdapter
+        searchResultsRecyclerView.adapter = teamSearchAdapter
     }
 
     private fun assignTeamToLeague(teamId: String, leagueId: String) {
@@ -123,20 +129,19 @@ class LeagueDetailFragment : Fragment() {
     }
 
     private fun setupSearch() {
+        teamSearchInputLayout.setEndIconOnClickListener {
+            performSearch()
+        }
+
         teamSearchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchJob?.cancel()
                 val query = s.toString().trim()
-                val currentLeagueId = args.leagueId
                 if (query.isNotEmpty()) {
                     searchJob = viewLifecycleOwner.lifecycleScope.launch {
-                        delay(300)
-                        if (isTennis) {
-                            viewModel.searchPlayers(query, currentLeagueId)
-                        } else {
-                            viewModel.searchTeams(query, currentLeagueId)
-                        }
+                        delay(500)
+                        performSearch()
                     }
                 } else {
                     teamSearchAdapter.updateList(emptyList())
@@ -145,6 +150,21 @@ class LeagueDetailFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun performSearch() {
+        val query = teamSearchEditText.text.toString().trim()
+        val currentLeagueId = args.leagueId
+        if (query.isNotEmpty()) {
+            Toast.makeText(requireContext(), "Поиск: $query", Toast.LENGTH_SHORT).show()
+            if (isTennis) {
+                viewModel.searchPlayers(query, currentLeagueId)
+            } else {
+                viewModel.searchTeams(query, currentLeagueId)
+            }
+        } else {
+            searchResultsRecyclerView.visibility = View.GONE
+        }
     }
 
     private fun observeViewModel() {
@@ -183,11 +203,30 @@ class LeagueDetailFragment : Fragment() {
         }
 
         viewModel.searchResults.observe(viewLifecycleOwner) { teams ->
-            if (!isTennis) teamSearchAdapter.updateList(teams)
+            if (!isTennis) {
+                teamSearchAdapter.updateList(teams)
+                searchResultsRecyclerView.visibility = if (teams.isNotEmpty()) View.VISIBLE else View.GONE
+                if (teams.isEmpty() && teamSearchEditText.text.isNotEmpty()) {
+                    Toast.makeText(context, "Команды не найдены", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.playerSearchResults.observe(viewLifecycleOwner) { players ->
-            if (isTennis) playerSearchAdapter.updateList(players)
+            if (isTennis) {
+                playerSearchAdapter.updateList(players)
+                searchResultsRecyclerView.visibility = if (players.isNotEmpty()) View.VISIBLE else View.GONE
+                if (players.isEmpty() && teamSearchEditText.text.isNotEmpty()) {
+                    Toast.makeText(context, "Игроки не найдены", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                viewModel.clearMessage()
+            }
         }
     }
 
@@ -195,11 +234,11 @@ class LeagueDetailFragment : Fragment() {
         if (isTennis) {
             labelLeagueTeams.text = "Игроки в лиге"
             labelSearchTeams.text = "Добавить игрока в лигу"
-            teamSearchEditText.hint = "Поиск игрока по имени"
+            teamSearchInputLayout.hint = "Поиск игрока по имени"
         } else {
             labelLeagueTeams.text = "Команды в лиге"
             labelSearchTeams.text = "Добавить команду в лигу"
-            teamSearchEditText.hint = "Поиск команды по названию"
+            teamSearchInputLayout.hint = "Поиск команды по названию"
         }
     }
 

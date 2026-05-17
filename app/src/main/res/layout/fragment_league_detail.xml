@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:clipToPadding="false"
+    android:paddingBottom="100dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -132,16 +134,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/leagueTeamsRecyclerView" />
 
-        <EditText
-            android:id="@+id/teamSearchEditText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/teamSearchInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Поиск команды по названию"
-            android:inputType="text"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:endIconDrawable="@drawable/ic_games"
+            app:endIconMode="custom"
+            app:endIconTint="@color/systemColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelSearchTeams" />
+            app:layout_constraintTop_toBottomOf="@+id/labelSearchTeams">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/teamSearchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Поиск команды по названию"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResultsRecyclerView"
@@ -153,7 +169,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teamSearchEditText"
+            app:layout_constraintTop_toBottomOf="@+id/teamSearchInputLayout"
             tools:listitem="@layout/item_team_search_result" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

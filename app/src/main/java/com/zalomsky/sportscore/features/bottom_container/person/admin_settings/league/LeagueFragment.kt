@@ -70,13 +70,26 @@ class LeagueFragment : Fragment() {
             fabAdd.visibility = View.VISIBLE
         }
 
-        val sportAdapter = ArrayAdapter(
+        val sportAdapter = object : ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             SportType.entries.map { it.name }
-        )
+        ) {
+            override fun getFilter(): android.widget.Filter {
+                return object : android.widget.Filter() {
+                    override fun performFiltering(constraint: CharSequence?): FilterResults {
+                        val results = FilterResults()
+                        results.values = SportType.entries.map { it.name }
+                        results.count = SportType.entries.size
+                        return results
+                    }
+                    override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                        notifyDataSetChanged()
+                    }
+                }
+            }
+        }
         sportTypeSelector.setAdapter(sportAdapter)
-        // Чтобы при нажатии всегда выпадал весь список, а не фильтровался по текущему тексту
         sportTypeSelector.setOnClickListener {
             sportTypeSelector.showDropDown()
         }
