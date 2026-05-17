@@ -58,22 +58,47 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/sportSpinner"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sportSelectorLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/spinner_outline_background"
-                    android:elevation="1dp" />
+                    android:layout_marginEnd="4dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+                    <AutoCompleteTextView
+                        android:id="@+id/sportAutoCompleteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Вид спорта"
+                        android:inputType="none"
+                        android:paddingVertical="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <Spinner
-                    android:id="@+id/leagueSpinner"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/leagueSelectorLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/spinner_outline_background"
-                    android:elevation="1dp" />
+                    android:layout_marginStart="4dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+                    <AutoCompleteTextView
+                        android:id="@+id/leagueAutoCompleteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Турнир"
+                        android:inputType="none"
+                        android:paddingVertical="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Stats Cards Placeholder -->
@@ -181,7 +206,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="100dp"
+        android:paddingBottom="120dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_match" />

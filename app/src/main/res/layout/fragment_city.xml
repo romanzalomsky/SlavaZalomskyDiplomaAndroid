@@ -59,7 +59,7 @@
             app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
-            app:boxBackgroundColor="#EEF0F2"
+            app:boxBackgroundColor="@color/white"
             app:hintEnabled="false"
             app:startIconDrawable="@drawable/ic_games">
 
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingBottom="80dp"
+        android:paddingBottom="120dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_city"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,21 +98,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Initially Hidden Add Form (to be moved to BottomSheet or managed via visibility) -->
+    <!-- Initially Hidden Add Form -->
     <androidx.cardview.widget.CardView
         android:id="@+id/addCityFormContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="100dp"
         android:visibility="gone"
         app:cardCornerRadius="24dp"
         app:cardElevation="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -147,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="12dp"
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
@@ -180,7 +188,8 @@
                 android:text="Отмена"
                 android:textColor="@color/textColor" />
 
-        </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

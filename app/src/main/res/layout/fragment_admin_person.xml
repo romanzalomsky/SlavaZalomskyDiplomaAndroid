@@ -322,7 +322,6 @@
         </androidx.gridlayout.widget.GridLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Users Content -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/adminUsersRecyclerView"
         android:layout_width="match_parent"
@@ -331,7 +330,7 @@
         android:paddingHorizontal="16dp"
         android:visibility="gone"
         android:clipToPadding="false"
-        android:paddingBottom="100dp"
+        android:paddingBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleGroup"
         tools:listitem="@layout/item_admin_user" />
@@ -352,6 +351,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
+            app:boxBackgroundColor="@color/white"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -375,6 +375,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="8dp"
+            app:boxBackgroundColor="@color/white"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -438,6 +439,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="120dp"
                     android:nestedScrollingEnabled="false" />
 
             </LinearLayout>

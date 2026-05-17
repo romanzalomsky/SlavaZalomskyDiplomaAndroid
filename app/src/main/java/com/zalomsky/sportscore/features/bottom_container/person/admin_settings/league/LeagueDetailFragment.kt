@@ -156,7 +156,6 @@ class LeagueDetailFragment : Fragment() {
         val query = teamSearchEditText.text.toString().trim()
         val currentLeagueId = args.leagueId
         if (query.isNotEmpty()) {
-            Toast.makeText(requireContext(), "Поиск: $query", Toast.LENGTH_SHORT).show()
             if (isTennis) {
                 viewModel.searchPlayers(query, currentLeagueId)
             } else {

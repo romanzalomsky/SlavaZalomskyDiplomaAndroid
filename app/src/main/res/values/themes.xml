@@ -1,6 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Sportscore" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Sportscore" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/systemColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:windowBackground">#F8F9FF</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
     </style>
 
@@ -33,7 +37,7 @@
     </style>
 
     <style name="Widget.App.Spinner" parent="Widget.AppCompat.Spinner">
-        <item name="android:popupBackground">@drawable/spinner_outline_background</item>
+        <item name="android:popupBackground">@color/white</item>
         <item name="android:overlapAnchor">true</item>
     </style>
 </resources>

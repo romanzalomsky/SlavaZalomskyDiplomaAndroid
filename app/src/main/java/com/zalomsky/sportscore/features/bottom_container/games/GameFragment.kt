@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast // Для временного сообщения
 import androidx.fragment.app.Fragment
@@ -34,8 +34,8 @@ class GameFragment : Fragment() {
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var errorTextView: TextView
     private lateinit var matchesAdapter: MatchesAdapter
-    private lateinit var leagueSpinner: Spinner
-    private lateinit var sportSpinner: Spinner
+    private lateinit var leagueAutoComplete: AutoCompleteTextView
+    private lateinit var sportAutoComplete: AutoCompleteTextView
     private lateinit var matchCountText: TextView
     private lateinit var selectedLeagueText: TextView
 
@@ -50,8 +50,8 @@ class GameFragment : Fragment() {
         matchesRecyclerView = view.findViewById(R.id.matchesRecyclerView)
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
         errorTextView = view.findViewById(R.id.errorTextView)
-        leagueSpinner = view.findViewById(R.id.leagueSpinner)
-        sportSpinner = view.findViewById(R.id.sportSpinner)
+        leagueAutoComplete = view.findViewById(R.id.leagueAutoCompleteTextView)
+        sportAutoComplete = view.findViewById(R.id.sportAutoCompleteTextView)
         matchCountText = view.findViewById(R.id.matchCountText)
         selectedLeagueText = view.findViewById(R.id.selectedLeagueText)
 
@@ -71,15 +71,32 @@ class GameFragment : Fragment() {
 
     private fun setupSportSpinner() {
         val sports = SportType.entries.map { it.name }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sports)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        sportSpinner.adapter = adapter
-        sportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedSport = SportType.valueOf(sports[position])
-                viewModel.setSport(selectedSport)
+        val adapter = object : ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            sports
+        ) {
+            override fun getFilter(): android.widget.Filter {
+                return object : android.widget.Filter() {
+                    override fun performFiltering(constraint: CharSequence?): FilterResults {
+                        val results = FilterResults()
+                        results.values = sports
+                        results.count = sports.size
+                        return results
+                    }
+                    override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                        notifyDataSetChanged()
+                    }
+                }
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+        sportAutoComplete.setAdapter(adapter)
+        sportAutoComplete.setText(SportType.FOOTBALL.name, false)
+        sportAutoComplete.setOnClickListener { sportAutoComplete.showDropDown() }
+
+        sportAutoComplete.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            val selectedSport = SportType.valueOf(parent.getItemAtPosition(position).toString())
+            viewModel.setSport(selectedSport)
         }
     }
 
@@ -102,22 +119,17 @@ class GameFragment : Fragment() {
     private fun updateLeagueSpinner() {
         val adapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
+            android.R.layout.simple_dropdown_item_1line,
             filteredLeagueList.map { it.leagueName }
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        leagueSpinner.adapter = adapter
+        leagueAutoComplete.setAdapter(adapter)
+        leagueAutoComplete.setOnClickListener { leagueAutoComplete.showDropDown() }
 
-        leagueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (position >= filteredLeagueList.size) return
-                val selectedLeague = filteredLeagueList[position]
-                selectedLeagueText.text = selectedLeague.leagueName
-                viewModel.loadLeagueSchedule(selectedLeague.id)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
+        leagueAutoComplete.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            if (position >= filteredLeagueList.size) return@OnItemClickListener
+            val selectedLeague = filteredLeagueList[position]
+            selectedLeagueText.text = selectedLeague.leagueName
+            viewModel.loadLeagueSchedule(selectedLeague.id)
         }
     }
 
